@@ -10,5 +10,6 @@ repositories {
 }
 
 dependencies {
+    compileOnly "org.jetbrains:annotations:${project.annotations_version}"
     testImplementation "junit:junit:${project.junit_version}"
 }

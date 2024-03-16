@@ -40,6 +40,6 @@ public class ReportBuilder {
     }
 
     public Report build() {
-        return this.reportType.create(this.sprint, this.header, this.footer, this.exportStrategy);
+        return this.reportType.factory().create(this.sprint, this.header, this.footer, this.exportStrategy);
     }
 }
