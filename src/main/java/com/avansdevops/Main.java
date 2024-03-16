@@ -23,6 +23,9 @@ public class Main {
         separator("Discussion");
         testDiscussion();
 
+        separator("Backlog States");
+        testBacklogStates();
+
         separator("Finished");
     }
 
@@ -57,5 +60,27 @@ public class Main {
 
         DiscussionVisitor visitor = new DiscussionPrintVisitor();
         discussion.accept(visitor);
+    }
+
+    private static void testBacklogStates() {
+        BacklogItem item = new BacklogItem();
+
+        System.out.println("# Fail during testing phase (by tester)");
+        item.getState().transferToDoing();
+        item.getState().transferToReadyForTesting();
+        item.getState().transferToTesting();
+        item.getState().transferToTodo();
+
+        System.out.println("\n# Fail during tested phase (by lead developer: not definition of done)");
+        item.getState().transferToDoing();
+        item.getState().transferToReadyForTesting();
+        item.getState().transferToTesting();
+        item.getState().transferToTested();
+        item.getState().transferToReadyForTesting();
+
+        System.out.println("\n# Success");
+        item.getState().transferToTesting();
+        item.getState().transferToTested();
+        item.getState().transferToDone();
     }
 }
