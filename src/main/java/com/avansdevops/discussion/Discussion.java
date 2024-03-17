@@ -14,32 +14,33 @@ import java.util.List;
 public class Discussion implements DiscussionVisitable {
     private final List<Comment> comments;
     private final BacklogItem item;
-    private String title;
 
-    public Discussion(String title, BacklogItem item) {
-        this(title, item, new ArrayList<>());
+    public Discussion(BacklogItem item) {
+        this(item, new ArrayList<>());
     }
 
-    public Discussion(String title, BacklogItem item, List<Comment> comments) {
-        this.title = title;
+    public Discussion(BacklogItem item, List<Comment> comments) {
         this.item = item;
         this.comments = comments;
     }
 
+    public BacklogItem getItem() {
+        return this.item;
+    }
+
+    public CommentBuilder commentBuilder() {
+        return new CommentBuilder(this);
+    }
+
     public void addComment(Comment comment) {
+        if (!this.isEditable()) {
+            throw new IllegalStateException("Discussion is not editable");
+        }
         this.comments.add(comment);
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public boolean isClosed() {
-        return false; // TODO: Check if backlog item resolved.
+    public boolean isEditable() {
+        return !this.item.isDone();
     }
 
     @Override

@@ -1,26 +1,20 @@
 package com.avansdevops.sprint;
 
 
-import java.util.List;
-
 import com.avansdevops.sprint.backlog.BacklogItem;
-import com.avansdevops.sprint.sprintStates.PlannedState;
-import com.avansdevops.sprint.sprintStates.SprintState;
+import com.avansdevops.sprint.states.PlannedState;
+import com.avansdevops.sprint.states.SprintState;
+import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
 
-public class Sprint {
-    private SprintState  state = new PlannedState(this);
-    private List<User> users;
-    private User scrumMaster;
-    private User productOwner;
-    private List<BacklogItem> backlog;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
-    public Sprint(List<User> users, User scrumMaster, User productOwner, List<BacklogItem> backlog) {
-        this.users = users;
-        this.scrumMaster = scrumMaster;
-        this.productOwner = productOwner;
-        this.backlog = backlog;
-    }
+public class Sprint {
+    private SprintState state = new PlannedState(this);
+    private final List<User> users = new ArrayList<>();
+    private final List<BacklogItem> backlog = new ArrayList<>();
 
     public void setState(SprintState state) {
         this.state = state;
@@ -30,36 +24,44 @@ public class Sprint {
         return this.state;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public void addBacklogItem(BacklogItem item) {
+        this.backlog.add(item);
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public User getScrumMaster() {
-        return scrumMaster;
-    }
-
-    public void setScrumMaster(User scrumMaster) {
-        this.scrumMaster = scrumMaster;
-    }
-
-    public User getProductOwner() {
-        return productOwner;
-    }
-
-    public void setProductOwner(User productOwner) {
-        this.productOwner = productOwner;
+    public void removeBacklogItem(BacklogItem item) {
+        this.backlog.remove(item);
     }
 
     public List<BacklogItem> getBacklog() {
-        return backlog;
+        return this.backlog;
     }
 
-    public void setBacklog(List<BacklogItem> backlog) {
-        this.backlog = backlog;
+    public void addUser(User user) {
+        Role role = user.getRole();
+        boolean canAdd = switch (role) {
+            case PRODUCT_OWNER, SCRUM_MASTER -> !this.hasRole(role);
+            default -> true;
+        };
+
+        if (canAdd) {
+            this.users.add(user);
+        }
     }
 
+    private boolean hasRole(Role role) {
+        for (User user : this.users) {
+            if (user.getRole() == role) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void notifyObservers(String message, Predicate<Role> predicate) {
+        for (User user : this.users) {
+            if (predicate.test(user.getRole())) {
+                // TODO
+            }
+        }
+    }
 }

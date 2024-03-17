@@ -16,26 +16,17 @@ public class Comment implements DiscussionVisitable {
     private final User author;
     private final String content;
     private final List<Comment> replies;
+
+    private final Discussion discussion;
     @Nullable
     private final Comment parent;
 
-    public Comment(User user, String content) {
-        this(user, content, null, new ArrayList<>());
-    }
-
-    public Comment(User user, String content, List<Comment> replies) {
-        this(user, content, null, replies);
-    }
-
-    public Comment(User user, String content, @Nullable Comment parent) {
-        this(user, content, parent, new ArrayList<>());
-    }
-
-    public Comment(User author, String content, @Nullable Comment parent, List<Comment> replies) {
+    protected Comment(User author, String content, Discussion discussion, @Nullable Comment parent) {
         this.author = author;
         this.content = content;
-        this.replies = replies;
+        this.discussion = discussion;
         this.parent = parent;
+        this.replies = new ArrayList<>();
     }
 
     @Override
@@ -47,7 +38,11 @@ public class Comment implements DiscussionVisitable {
     }
 
     public Comment addReply(User author, String content) {
-        Comment comment = new Comment(author, content, this);
+        if (!this.discussion.isEditable()) {
+            throw new IllegalStateException("Discussion is not editable");
+        }
+
+        Comment comment = new Comment(author, content, this.discussion, this);
         this.replies.add(comment);
         return comment;
     }
@@ -58,6 +53,10 @@ public class Comment implements DiscussionVisitable {
 
     public String getContent() {
         return this.content;
+    }
+
+    public Discussion getDiscussion() {
+        return this.discussion;
     }
 
     @Nullable

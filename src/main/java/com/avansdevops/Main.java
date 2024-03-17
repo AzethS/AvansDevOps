@@ -1,9 +1,8 @@
 package com.avansdevops;
 
-import com.avansdevops.discussion.Comment;
 import com.avansdevops.discussion.Discussion;
-import com.avansdevops.discussion.visitor.DiscussionVisitor;
 import com.avansdevops.discussion.visitor.DiscussionPrintVisitor;
+import com.avansdevops.discussion.visitor.DiscussionVisitor;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.report.Report;
@@ -50,20 +49,34 @@ public class Main {
         User user2 = new User("Jane");
         User user3 = new User("Jack");
 
-        Discussion discussion = new Discussion("Exporting Strategy", new BacklogItem());
-        Comment comment = new Comment(user, "This is a comment");
-        discussion.addComment(comment);
+        BacklogItem item = new BacklogItem(new Sprint(), "Exporting Strategy");
+        Discussion discussion = new Discussion(item);
 
-        Comment reply1 = comment.addReply(user2, "This is a reply");
-        Comment reply2 = comment.addReply(user3, "This is another reply");
-        Comment reply3 = reply2.addReply(user, "This is a reply to a reply");
+        discussion.addComment(discussion.commentBuilder()
+                .author(user3)
+                .content("This is a simple comment")
+                .build()
+        );
+
+        discussion.addComment(discussion.commentBuilder()
+                .author(user)
+                .content("This is a comment with replies")
+                .addReply(discussion.commentBuilder()
+                        .author(user2)
+                        .content("This is a reply")
+                        .addReply(discussion.commentBuilder()
+                                .author(user3)
+                                .content("This is a reply to a reply")
+                        )
+                ).build()
+        );
 
         DiscussionVisitor visitor = new DiscussionPrintVisitor();
         discussion.accept(visitor);
     }
 
     private static void testBacklogStates() {
-        BacklogItem item = new BacklogItem();
+        BacklogItem item = new BacklogItem(new Sprint(), "State Patterns");
 
         System.out.println("# Fail during testing phase (by tester)");
         item.getState().transferToDoing();

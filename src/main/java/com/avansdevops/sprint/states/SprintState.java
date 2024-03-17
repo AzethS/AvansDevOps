@@ -1,12 +1,14 @@
-package com.avansdevops.sprint.sprintStates;
+package com.avansdevops.sprint.states;
 
 import com.avansdevops.sprint.Sprint;
 
 public abstract class SprintState {
     protected final Sprint context;
+
     protected SprintState(Sprint context) {
         this.context = context;
     }
+
     public abstract void transferToPlanned();
 
     public abstract void transferToInProgress();
@@ -15,4 +17,5 @@ public abstract class SprintState {
 
     public abstract void transferToFinished();
 
+    public abstract void transferToFailed();
 }

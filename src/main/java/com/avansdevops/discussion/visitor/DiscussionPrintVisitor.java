@@ -9,7 +9,7 @@ import com.avansdevops.discussion.Discussion;
 public class DiscussionPrintVisitor implements DiscussionVisitor {
     @Override
     public void visit(Discussion discussion) {
-        System.out.printf("Discussion: %s | %s\n", discussion.getTitle(), discussion.isClosed() ? "Closed" : "Open");
+        System.out.printf("Discussion: %s | %s\n", discussion.getItem().getTitle(), discussion.isEditable() ? "Open" : "Closed");
     }
 
     @Override

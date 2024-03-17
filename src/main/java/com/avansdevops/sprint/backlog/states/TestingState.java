@@ -1,6 +1,7 @@
 package com.avansdevops.sprint.backlog.states;
 
 import com.avansdevops.sprint.backlog.BacklogItem;
+import com.avansdevops.user.Role;
 
 /**
  * State Pattern (Behavioral)
@@ -15,7 +16,11 @@ public class TestingState extends BacklogItemState {
     public void transferToTodo() {
         System.out.println("Transferring from Testing to Todo");
         this.context.setState(new TodoState(this.context));
-        // TODO: NOTIFY SCRUM MASTER
+
+        this.context.getSprint().notifyObservers(
+                String.format("Backlog item '%s' has failed the testing phase", this.context.getTitle()),
+                (role) -> role == Role.SCRUM_MASTER
+        );
     }
 
     @Override
@@ -37,7 +42,11 @@ public class TestingState extends BacklogItemState {
     public void transferToTested() {
         System.out.println("Transferring from Testing to Tested");
         this.context.setState(new TestedState(this.context));
-        // TODO: NOTIFY LEAD DEVELOPERS
+
+        this.context.getSprint().notifyObservers(
+                String.format("Backlog item '%s' needs to be checked via the definition of done", this.context.getTitle()),
+                (role) -> role == Role.LEAD_DEVELOPER
+        );
     }
 
     @Override

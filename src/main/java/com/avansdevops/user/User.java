@@ -5,8 +5,7 @@ public class User {
     private Role role;
 
     public User(String name) {
-        this.name = name;
-        
+        this(name, Role.UNKNOWN);
     }
     public User(String name, Role role) {
         this.name = name;
@@ -18,7 +17,7 @@ public class User {
     }
 
     public Role getRole() {
-        return role;
+        return this.role;
     }
 
     public void setRole(Role role) {
