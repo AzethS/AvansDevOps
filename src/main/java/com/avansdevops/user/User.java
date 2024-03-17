@@ -2,7 +2,7 @@ package com.avansdevops.user;
 
 public class User {
     private final String name;
-    public Role role;
+    private Role role;
 
     public User(String name) {
         this.name = name;
