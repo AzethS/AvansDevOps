@@ -20,6 +20,7 @@ public class BacklogItem {
 
     public void setState(BacklogItemState state) {
         this.state = state;
+        state.onStateChange();
     }
 
     public BacklogItemState getState() {

@@ -9,6 +9,8 @@ public abstract class SprintState {
         this.context = context;
     }
 
+    public abstract void onStateChange();
+
     public abstract void transferToPlanned();
 
     public abstract void transferToInProgress();

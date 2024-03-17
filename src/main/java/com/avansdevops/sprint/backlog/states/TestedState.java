@@ -1,6 +1,7 @@
 package com.avansdevops.sprint.backlog.states;
 
 import com.avansdevops.sprint.backlog.BacklogItem;
+import com.avansdevops.user.Role;
 
 /**
  * State Pattern (Behavioral)
@@ -8,6 +9,16 @@ import com.avansdevops.sprint.backlog.BacklogItem;
 public class TestedState extends BacklogItemState {
     protected TestedState(BacklogItem context) {
         super(context);
+    }
+
+    @Override
+    public void onStateChange() {
+        System.out.println("State changed to Tested");
+
+        this.context.getSprint().notifySubscribers(
+                String.format("Backlog item '%s' needs to be checked via the definition of done", this.context.getTitle()),
+                (user) -> user.getRole() == Role.LEAD_DEVELOPER
+        );
     }
 
     @Override
@@ -22,7 +33,6 @@ public class TestedState extends BacklogItemState {
 
     @Override
     public void transferToReadyForTesting() {
-        System.out.println("Transferring from Tested to ReadyForTesting");
         this.context.setState(new ReadyForTestingState(this.context));
     }
 
@@ -38,7 +48,6 @@ public class TestedState extends BacklogItemState {
 
     @Override
     public void transferToDone() {
-        System.out.println("Transferring from Tested to Done");
         this.context.setState(new DoneState(this.context));
     }
 }

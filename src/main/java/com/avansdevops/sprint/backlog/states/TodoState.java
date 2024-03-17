@@ -11,13 +11,17 @@ public class TodoState extends BacklogItemState {
     }
 
     @Override
+    public void onStateChange() {
+        System.out.println("State changed to Todo");
+    }
+
+    @Override
     public void transferToTodo() {
         throw new UnsupportedOperationException("Already in Todo state");
     }
 
     @Override
     public void transferToDoing() {
-        System.out.println("Transferring from Todo to Doing");
         this.context.setState(new DoingState(this.context));
     }
 

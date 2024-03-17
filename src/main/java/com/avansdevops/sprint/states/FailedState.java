@@ -6,10 +6,15 @@ import com.avansdevops.user.Role;
 public class FailedState extends SprintState {
     protected FailedState(Sprint context) {
         super(context);
+    }
 
-        this.context.notifyObservers(
+    @Override
+    public void onStateChange() {
+        System.out.println("State changed to Failed");
+
+        this.context.notifySubscribers(
                 "Sprint has failed",
-                (role) -> role == Role.PRODUCT_OWNER || role == Role.SCRUM_MASTER
+                (user) -> user.getRole() == Role.PRODUCT_OWNER || user.getRole() == Role.SCRUM_MASTER
         );
     }
 

@@ -8,6 +8,11 @@ public class FinishedState extends SprintState {
     }
 
     @Override
+    public void onStateChange() {
+        System.out.println("State changed to Finished");
+    }
+
+    @Override
     public void transferToPlanned() {
         throw new UnsupportedOperationException("Cannot transfer from Finished to Planned");
     }

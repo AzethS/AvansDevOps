@@ -11,6 +11,11 @@ public class DoneState extends BacklogItemState {
     }
 
     @Override
+    public void onStateChange() {
+        System.out.println("State changed to Done");
+    }
+
+    @Override
     public void transferToTodo() {
         throw new UnsupportedOperationException("Cannot transfer from Done to Todo");
     }

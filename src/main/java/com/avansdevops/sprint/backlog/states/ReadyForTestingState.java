@@ -1,6 +1,7 @@
 package com.avansdevops.sprint.backlog.states;
 
 import com.avansdevops.sprint.backlog.BacklogItem;
+import com.avansdevops.user.Role;
 
 /**
  * State Pattern (Behavioral)
@@ -8,6 +9,16 @@ import com.avansdevops.sprint.backlog.BacklogItem;
 public class ReadyForTestingState extends BacklogItemState {
     protected ReadyForTestingState(BacklogItem context) {
         super(context);
+    }
+
+    @Override
+    public void onStateChange() {
+        System.out.println("State changed to ReadyForTesting");
+
+        this.context.getSprint().notifySubscribers(
+                String.format("Backlog item '%s' is ready to be tested", this.context.getTitle()),
+                (user) -> user.getRole() == Role.TESTER
+        );
     }
 
     @Override
@@ -27,7 +38,6 @@ public class ReadyForTestingState extends BacklogItemState {
 
     @Override
     public void transferToTesting() {
-        System.out.println("Transferring from ReadyForTesting to Testing");
         this.context.setState(new TestingState(this.context));
     }
 

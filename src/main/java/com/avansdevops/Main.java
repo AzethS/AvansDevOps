@@ -3,6 +3,8 @@ package com.avansdevops;
 import com.avansdevops.discussion.Discussion;
 import com.avansdevops.discussion.visitor.DiscussionPrintVisitor;
 import com.avansdevops.discussion.visitor.DiscussionVisitor;
+import com.avansdevops.notifications.strategy.SlackNotificationStrategy;
+import com.avansdevops.notifications.strategy.SmsNotificationStrategy;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.report.Report;
@@ -10,6 +12,7 @@ import com.avansdevops.sprint.report.ReportBuilder;
 import com.avansdevops.sprint.report.export.PdfExportStrategy;
 import com.avansdevops.sprint.report.export.PngExportStrategy;
 import com.avansdevops.sprint.report.types.ReportType;
+import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
 
 public class Main {
@@ -76,7 +79,18 @@ public class Main {
     }
 
     private static void testBacklogStates() {
-        BacklogItem item = new BacklogItem(new Sprint(), "State Patterns");
+        User productOwner = new User("Jack", Role.PRODUCT_OWNER);
+        User scrumMaster = new User("Jill", Role.SCRUM_MASTER);
+        User leadDeveloper = new User("John", Role.LEAD_DEVELOPER, new SlackNotificationStrategy());
+        User tester = new User("Jane", Role.TESTER, new SmsNotificationStrategy());
+
+        Sprint sprint = new Sprint();
+        sprint.addParticipant(productOwner);
+        sprint.addParticipant(scrumMaster);
+        sprint.addParticipant(leadDeveloper);
+        sprint.addParticipant(tester);
+
+        BacklogItem item = new BacklogItem(sprint, "State Patterns");
 
         System.out.println("# Fail during testing phase (by tester)");
         item.getState().transferToDoing();

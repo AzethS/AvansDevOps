@@ -1,6 +1,7 @@
 package com.avansdevops.sprint;
 
 
+import com.avansdevops.notifications.observer.Publisher;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.states.PlannedState;
 import com.avansdevops.sprint.states.SprintState;
@@ -8,16 +9,18 @@ import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Set;
 
-public class Sprint {
+public class Sprint extends Publisher<User> {
     private SprintState state = new PlannedState(this);
-    private final List<User> users = new ArrayList<>();
+    private final Set<User> participants = new HashSet<>();
     private final List<BacklogItem> backlog = new ArrayList<>();
 
     public void setState(SprintState state) {
         this.state = state;
+        state.onStateChange();
     }
 
     public SprintState getState() {
@@ -36,7 +39,11 @@ public class Sprint {
         return this.backlog;
     }
 
-    public void addUser(User user) {
+    public void addParticipant(User user) {
+        if (this.participants.contains(user)) {
+            throw new IllegalArgumentException("User is already a participant");
+        }
+
         Role role = user.getRole();
         boolean canAdd = switch (role) {
             case PRODUCT_OWNER, SCRUM_MASTER -> !this.hasRole(role);
@@ -44,24 +51,25 @@ public class Sprint {
         };
 
         if (canAdd) {
-            this.users.add(user);
+            this.participants.add(user);
+            this.subscribe(user);
+        } else {
+            throw new IllegalArgumentException("Cannot add more than one participant with role " + role);
+        }
+    }
+
+    public void removeParticipant(User user) {
+        if (this.participants.remove(user)) {
+            this.unsubscribe(user);
         }
     }
 
     private boolean hasRole(Role role) {
-        for (User user : this.users) {
+        for (User user : this.participants) {
             if (user.getRole() == role) {
                 return true;
             }
         }
         return false;
-    }
-
-    public void notifyObservers(String message, Predicate<Role> predicate) {
-        for (User user : this.users) {
-            if (predicate.test(user.getRole())) {
-                // TODO
-            }
-        }
     }
 }

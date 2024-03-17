@@ -12,6 +12,8 @@ public abstract class BacklogItemState {
         this.context = context;
     }
 
+    public abstract void onStateChange();
+
     public abstract void transferToTodo();
 
     public abstract void transferToDoing();

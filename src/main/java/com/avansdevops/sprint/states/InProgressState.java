@@ -8,6 +8,11 @@ public class InProgressState extends SprintState {
     }
 
     @Override
+    public void onStateChange() {
+        System.out.println("State changed to InProgress");
+    }
+
+    @Override
     public void transferToPlanned() {
         throw new UnsupportedOperationException("Cannot transfer from InProgress to Planned");
     }
@@ -19,13 +24,11 @@ public class InProgressState extends SprintState {
 
     @Override
     public void transferToInReview() {
-        System.out.println("Transferring from InProgress to InReview");
         this.context.setState(new InReviewState(this.context));
     }
 
     @Override
     public void transferToFinished() {
-        System.out.println("Transferring from InProgress to Finished");
         this.context.setState(new FinishedState(this.context));
     }
 

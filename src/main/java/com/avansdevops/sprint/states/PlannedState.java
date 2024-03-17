@@ -9,13 +9,17 @@ public class PlannedState extends SprintState {
     }
 
     @Override
+    public void onStateChange() {
+        System.out.println("State changed to Planned");
+    }
+
+    @Override
     public void transferToPlanned() {
         throw new UnsupportedOperationException("Already in Planned state");
     }
 
     @Override
     public void transferToInProgress() {
-        System.out.println("Transferring from Planned to InProgress");
         this.context.setState(new InProgressState(this.context));
     }
 

@@ -13,13 +13,17 @@ public class TestingState extends BacklogItemState {
     }
 
     @Override
+    public void onStateChange() {
+        System.out.println("State changed to Testing");
+    }
+
+    @Override
     public void transferToTodo() {
-        System.out.println("Transferring from Testing to Todo");
         this.context.setState(new TodoState(this.context));
 
-        this.context.getSprint().notifyObservers(
+        this.context.getSprint().notifySubscribers(
                 String.format("Backlog item '%s' has failed the testing phase", this.context.getTitle()),
-                (role) -> role == Role.SCRUM_MASTER
+                (user) -> user.getRole() == Role.SCRUM_MASTER
         );
     }
 
@@ -40,13 +44,7 @@ public class TestingState extends BacklogItemState {
 
     @Override
     public void transferToTested() {
-        System.out.println("Transferring from Testing to Tested");
         this.context.setState(new TestedState(this.context));
-
-        this.context.getSprint().notifyObservers(
-                String.format("Backlog item '%s' needs to be checked via the definition of done", this.context.getTitle()),
-                (role) -> role == Role.LEAD_DEVELOPER
-        );
     }
 
     @Override

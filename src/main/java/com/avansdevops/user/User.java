@@ -1,15 +1,26 @@
 package com.avansdevops.user;
 
-public class User {
+import com.avansdevops.notifications.observer.Subscriber;
+import com.avansdevops.notifications.strategy.EmailNotificationStrategy;
+import com.avansdevops.notifications.strategy.NotificationStrategy;
+
+public class User implements Subscriber {
     private final String name;
     private Role role;
+    private NotificationStrategy notificationStrategy;
 
     public User(String name) {
         this(name, Role.UNKNOWN);
     }
+
     public User(String name, Role role) {
+        this (name, role, new EmailNotificationStrategy());
+    }
+
+    public User(String name, Role role, NotificationStrategy notificationStrategy) {
         this.name = name;
         this.role = role;
+        this.notificationStrategy = notificationStrategy;
     }
 
     public String getName() {
@@ -22,5 +33,19 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public void setNotificationStrategy(NotificationStrategy notificationStrategy) {
+        this.notificationStrategy = notificationStrategy;
+    }
+
+    @Override
+    public void update(String message) {
+        this.notificationStrategy.sendNotification(message);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("User{name=%s,role=%s}", this.name, this.role);
     }
 }
