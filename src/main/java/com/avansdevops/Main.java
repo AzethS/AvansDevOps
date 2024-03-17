@@ -5,6 +5,9 @@ import com.avansdevops.discussion.visitor.DiscussionPrintVisitor;
 import com.avansdevops.discussion.visitor.DiscussionVisitor;
 import com.avansdevops.notifications.strategy.SlackNotificationStrategy;
 import com.avansdevops.notifications.strategy.SmsNotificationStrategy;
+import com.avansdevops.pipeline.Pipeline;
+import com.avansdevops.pipeline.actions.*;
+import com.avansdevops.sprint.ReleaseSprint;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.report.Report;
@@ -14,6 +17,8 @@ import com.avansdevops.sprint.report.export.PngExportStrategy;
 import com.avansdevops.sprint.report.types.ReportType;
 import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
+
+import java.util.List;
 
 public class Main {
 
@@ -27,6 +32,9 @@ public class Main {
 
         separator("Backlog States");
         testBacklogStates();
+
+        separator("Pipeline");
+        testSprintWithPipeline();
 
         separator("Finished");
     }
@@ -79,16 +87,7 @@ public class Main {
     }
 
     private static void testBacklogStates() {
-        User productOwner = new User("Jack", Role.PRODUCT_OWNER);
-        User scrumMaster = new User("Jill", Role.SCRUM_MASTER);
-        User leadDeveloper = new User("John", Role.LEAD_DEVELOPER, new SlackNotificationStrategy());
-        User tester = new User("Jane", Role.TESTER, new SmsNotificationStrategy());
-
-        Sprint sprint = new Sprint();
-        sprint.addParticipant(productOwner);
-        sprint.addParticipant(scrumMaster);
-        sprint.addParticipant(leadDeveloper);
-        sprint.addParticipant(tester);
+        Sprint sprint = createSprintWithPipeline();
 
         BacklogItem item = new BacklogItem(sprint, "State Patterns");
 
@@ -109,5 +108,46 @@ public class Main {
         item.getState().transferToTesting();
         item.getState().transferToTested();
         item.getState().transferToDone();
+    }
+
+    private static Sprint createSprintWithPipeline() {
+        Pipeline pipeline = new Pipeline();
+        pipeline.addAction(new SourcesAction("https://github.com/"));
+        pipeline.addAction(new PackageAction(List.of(
+                "com.google.code.gson:gson:2.10.1",
+                "junit:junit:4.13.2"
+        )));
+        pipeline.addAction(new BuildAction("Maven"));
+        pipeline.addAction(new TestAction("jUnit"));
+        pipeline.addAction(new AnalyseAction("SonarQube"));
+        pipeline.addAction(new DeployAction("Azure"));
+        pipeline.addAction(new UtilityAction(List.of(
+                "echo 'Hello, World!'"
+        )));
+
+        User productOwner = new User("Jack", Role.PRODUCT_OWNER);
+        User scrumMaster = new User("Jill", Role.SCRUM_MASTER);
+        User leadDeveloper = new User("John", Role.LEAD_DEVELOPER, new SlackNotificationStrategy());
+        User tester = new User("Jane", Role.TESTER, new SmsNotificationStrategy());
+
+        Sprint sprint = new ReleaseSprint(pipeline);
+        sprint.addParticipant(productOwner);
+        sprint.addParticipant(scrumMaster);
+        sprint.addParticipant(leadDeveloper);
+        sprint.addParticipant(tester);
+        return sprint;
+    }
+
+    private static void testSprintWithPipeline() {
+        Sprint failedSprint = createSprintWithPipeline();
+        failedSprint.getState().transferToInProgress();
+        failedSprint.getState().transferToInReview();
+        failedSprint.getState().transferToFailed();
+        System.out.println();
+
+        Sprint finishedSprint = createSprintWithPipeline();
+        finishedSprint.getState().transferToInProgress();
+        finishedSprint.getState().transferToInReview();
+        finishedSprint.getState().transferToFinished();
     }
 }

@@ -10,6 +10,7 @@ public class FinishedState extends SprintState {
     @Override
     public void onStateChange() {
         System.out.println("State changed to Finished");
+        this.context.onFinished();
     }
 
     @Override

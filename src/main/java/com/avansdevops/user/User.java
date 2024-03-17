@@ -14,7 +14,7 @@ public class User implements Subscriber {
     }
 
     public User(String name, Role role) {
-        this (name, role, new EmailNotificationStrategy());
+        this(name, role, new EmailNotificationStrategy());
     }
 
     public User(String name, Role role, NotificationStrategy notificationStrategy) {

@@ -41,7 +41,7 @@ public class Sprint extends Publisher<User> {
 
     public void addParticipant(User user) {
         if (this.participants.contains(user)) {
-            throw new IllegalArgumentException("User is already a participant");
+            throw new IllegalArgumentException("User is already a participant of this sprint");
         }
 
         Role role = user.getRole();
@@ -71,5 +71,9 @@ public class Sprint extends Publisher<User> {
             }
         }
         return false;
+    }
+
+    public void onFinished() {
+        // NO-OP
     }
 }
