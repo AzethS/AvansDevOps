@@ -12,15 +12,12 @@ public class Pipeline {
         this.actions.add(action);
     }
 
-    public boolean execute() {
-        System.out.println("Executing pipeline...");
+    public boolean run() {
         for (Action action : this.actions) {
             if (!action.execute()) {
-                System.out.println("Pipeline failed!");
                 return false;
             }
         }
-        System.out.println("Pipeline succeeded!");
         return true;
     }
 }

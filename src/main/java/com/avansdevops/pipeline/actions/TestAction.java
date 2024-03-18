@@ -12,12 +12,12 @@ public class TestAction implements Action {
         return this.runTests() && this.publishTestResults();
     }
 
-    private boolean runTests() {
+    public boolean runTests() {
         System.out.printf("Testing with %s...%n", this.testingFramework);
         return true;
     }
 
-    private boolean publishTestResults() {
+    public boolean publishTestResults() {
         System.out.println("Publishing test results...");
         return true;
     }

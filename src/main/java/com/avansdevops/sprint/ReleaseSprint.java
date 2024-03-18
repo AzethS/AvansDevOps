@@ -12,6 +12,6 @@ public class ReleaseSprint extends Sprint {
     @Override
     public void onFinished() {
         super.onFinished();
-        this.releasePipeline.execute();
+        this.releasePipeline.run();
     }
 }
