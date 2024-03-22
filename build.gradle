@@ -1,6 +1,8 @@
 plugins {
     id 'java'
-    id 'com.adarshr.test-logger' version '4.0.0'
+    id 'com.adarshr.test-logger' version '4.+'
+    id "org.sonarqube" version "4.+"
+    id 'jacoco'
 }
 
 version '1.0'
@@ -11,6 +13,14 @@ repositories {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = true
+    }
 }
 
 dependencies {
@@ -21,4 +31,12 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${project.junit_version}"
 
     testImplementation "org.mockito:mockito-core:${project.mockito_version}"
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "AzethS_AvansDevOps")
+        property("sonar.organization", "azeths")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
