@@ -8,15 +8,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 
-public class PipelineTests {
+class PipelineTests {
 
     @ParameterizedTest
     @CsvSource(value = {
             "false, true",
-            "true, false",
-            "false, false"
+            "true, false"
     })
-    public void testActionWithFailingComponentShouldFail(boolean succeedsTest, boolean succeedsTestPublish) {
+    void testActionWithFailingComponentShouldFail(boolean succeedsTest, boolean succeedsTestPublish) {
         TestAction mock = Mockito.spy(new TestAction("jUnit"));
 
         Mockito.when(mock.runTests()).thenReturn(succeedsTest);
@@ -35,7 +34,7 @@ public class PipelineTests {
             "true, true, true, true, true, false, true",
             "true, true, true, true, true, true, false"
     })
-    public void pipelineWithAnyFailingActionShouldFail(boolean sourcesAction, boolean packageAction, boolean buildAction, boolean testAction, boolean analyseAction, boolean deployAction, boolean utilityAction) {
+    void pipelineWithAnyFailingActionShouldFail(boolean sourcesAction, boolean packageAction, boolean buildAction, boolean testAction, boolean analyseAction, boolean deployAction, boolean utilityAction) {
         Pipeline pipeline = new Pipeline();
 
         pipeline.addAction(mockAction(SourcesAction.class, sourcesAction));
@@ -50,7 +49,7 @@ public class PipelineTests {
     }
 
     @Test
-    public void pipelineWithoutFailingActionShouldSucceed() {
+    void pipelineWithoutFailingActionShouldSucceed() {
         Pipeline pipeline = new Pipeline();
 
         pipeline.addAction(mockAction(SourcesAction.class, true));

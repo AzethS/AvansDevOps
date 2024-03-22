@@ -10,7 +10,7 @@ public class EffortPointsReport extends Report {
     }
 
     @Override
-    protected String generate(Sprint sprint) {
+    public String generate(Sprint sprint) {
         return "Effort Points Report";
     }
 }

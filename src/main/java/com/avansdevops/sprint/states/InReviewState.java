@@ -1,5 +1,6 @@
 package com.avansdevops.sprint.states;
 
+import com.avansdevops.AvansDevOps;
 import com.avansdevops.sprint.Sprint;
 
 public class InReviewState extends SprintState {
@@ -9,22 +10,22 @@ public class InReviewState extends SprintState {
 
     @Override
     public void onStateChange() {
-        System.out.println("State changed to InReview");
+        AvansDevOps.LOGGER.info("State changed to InReview");
     }
 
     @Override
     public void transferToPlanned() {
-        throw new UnsupportedOperationException("Cannot transfer from InReview to Planned");
+        throw new IllegalStateException("Cannot transfer from InReview to Planned");
     }
 
     @Override
     public void transferToInProgress() {
-        throw new UnsupportedOperationException("Cannot transfer from InReview to InProgress");
+        throw new IllegalStateException("Cannot transfer from InReview to InProgress");
     }
 
     @Override
     public void transferToInReview() {
-        throw new UnsupportedOperationException("Already in InReview state");
+        throw new IllegalStateException("Already in InReview state");
     }
 
     @Override

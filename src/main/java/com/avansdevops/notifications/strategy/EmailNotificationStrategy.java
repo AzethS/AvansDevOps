@@ -1,8 +1,10 @@
 package com.avansdevops.notifications.strategy;
 
+import com.avansdevops.AvansDevOps;
+
 public class EmailNotificationStrategy implements NotificationStrategy {
     @Override
     public void sendNotification(String message) {
-        System.out.printf("Email: %s%n", message);
+        AvansDevOps.LOGGER.info("Sending Email notification: {}", message);
     }
 }

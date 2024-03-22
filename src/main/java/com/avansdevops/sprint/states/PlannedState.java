@@ -1,5 +1,6 @@
 package com.avansdevops.sprint.states;
 
+import com.avansdevops.AvansDevOps;
 import com.avansdevops.sprint.Sprint;
 
 
@@ -10,12 +11,12 @@ public class PlannedState extends SprintState {
 
     @Override
     public void onStateChange() {
-        System.out.println("State changed to Planned");
+        AvansDevOps.LOGGER.info("State changed to Planned");
     }
 
     @Override
     public void transferToPlanned() {
-        throw new UnsupportedOperationException("Already in Planned state");
+        throw new IllegalStateException("Already in Planned state");
     }
 
     @Override
@@ -25,16 +26,16 @@ public class PlannedState extends SprintState {
 
     @Override
     public void transferToInReview() {
-        throw new UnsupportedOperationException("Cannot transfer from Planned to InReview");
+        throw new IllegalStateException("Cannot transfer from Planned to InReview");
     }
 
     @Override
     public void transferToFinished() {
-        throw new UnsupportedOperationException("Cannot transfer from Planned to Finished");
+        throw new IllegalStateException("Cannot transfer from Planned to Finished");
     }
 
     @Override
     public void transferToFailed() {
-        throw new UnsupportedOperationException("Cannot transfer from Planned to Failed");
+        throw new IllegalStateException("Cannot transfer from Planned to Failed");
     }
 }

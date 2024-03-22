@@ -1,5 +1,7 @@
 package com.avansdevops.pipeline.actions;
 
+import com.avansdevops.AvansDevOps;
+
 import java.util.List;
 
 public class PackageAction implements Action {
@@ -12,12 +14,7 @@ public class PackageAction implements Action {
     @Override
     public boolean execute() {
         for (String packageId : this.packages) {
-            System.out.printf("Installing package %s...%n", packageId);
-
-            boolean success = true;
-            if (!success) { // Simulate success, cancel pipeline if installation of package fails.
-                return false;
-            }
+            AvansDevOps.LOGGER.info("Installing package {}...", packageId);
         }
 
         return true;

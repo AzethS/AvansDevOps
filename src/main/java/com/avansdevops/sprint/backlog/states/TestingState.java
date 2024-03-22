@@ -1,5 +1,6 @@
 package com.avansdevops.sprint.backlog.states;
 
+import com.avansdevops.AvansDevOps;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.user.Role;
 
@@ -14,7 +15,7 @@ public class TestingState extends BacklogItemState {
 
     @Override
     public void onStateChange() {
-        System.out.println("State changed to Testing");
+        AvansDevOps.LOGGER.info("State changed to Testing");
     }
 
     @Override
@@ -23,23 +24,23 @@ public class TestingState extends BacklogItemState {
 
         this.context.getSprint().notifySubscribers(
                 String.format("Backlog item '%s' has failed the testing phase", this.context.getTitle()),
-                (user) -> user.getRole() == Role.SCRUM_MASTER
+                user -> user.getRole() == Role.SCRUM_MASTER
         );
     }
 
     @Override
     public void transferToDoing() {
-        throw new UnsupportedOperationException("Cannot transfer from Testing to Doing");
+        throw new IllegalStateException("Cannot transfer from Testing to Doing");
     }
 
     @Override
     public void transferToReadyForTesting() {
-        throw new UnsupportedOperationException("Cannot transfer from Testing to ReadyForTesting");
+        throw new IllegalStateException("Cannot transfer from Testing to ReadyForTesting");
     }
 
     @Override
     public void transferToTesting() {
-        throw new UnsupportedOperationException("Already in Testing state");
+        throw new IllegalStateException("Already in Testing state");
     }
 
     @Override
@@ -49,6 +50,6 @@ public class TestingState extends BacklogItemState {
 
     @Override
     public void transferToDone() {
-        throw new UnsupportedOperationException("Cannot transfer from Testing to Done");
+        throw new IllegalStateException("Cannot transfer from Testing to Done");
     }
 }

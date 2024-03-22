@@ -1,5 +1,7 @@
 package com.avansdevops.pipeline.actions;
 
+import com.avansdevops.AvansDevOps;
+
 public class BuildAction implements Action {
     private final String buildSystem;
 
@@ -9,7 +11,7 @@ public class BuildAction implements Action {
 
     @Override
     public boolean execute() {
-        System.out.printf("Building with %s...%n", this.buildSystem);
+        AvansDevOps.LOGGER.info("Building with {}...", this.buildSystem);
         return true;
     }
 }

@@ -10,7 +10,7 @@ public class BurndownReport extends Report {
     }
 
     @Override
-    protected String generate(Sprint sprint) {
+    public String generate(Sprint sprint) {
         return "Burndown Report";
     }
 }

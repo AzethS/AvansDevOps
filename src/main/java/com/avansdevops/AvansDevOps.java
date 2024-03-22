@@ -17,13 +17,15 @@ import com.avansdevops.sprint.report.export.PngExportStrategy;
 import com.avansdevops.sprint.report.types.ReportType;
 import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class Main {
+public class AvansDevOps {
+    public static final Logger LOGGER = LogManager.getLogger("Avans DevOps");
 
     public static void main(String[] args) {
-        // TODO: Temporary testing code. To be replaced with jUnit.
         separator("Report");
         testReport();
 
@@ -40,11 +42,12 @@ public class Main {
     }
 
     private static void separator(String title) {
-        System.out.printf("----------------------------------------------- %s -----------------------------------------------\n", title);
+        LOGGER.info("------------------------------------------------- {} -------------------------------------------------", title);
     }
 
     private static void testReport() {
-        Report report = new ReportBuilder(ReportType.BURNDOWN, new Sprint())
+        Report report = new ReportBuilder(new Sprint())
+                .type(ReportType.BURNDOWN)
                 .exportStrategy(new PngExportStrategy())
                 .header("Header")
                 .footer("Footer")
@@ -91,20 +94,20 @@ public class Main {
 
         BacklogItem item = new BacklogItem(sprint, "State Patterns");
 
-        System.out.println("# Fail during testing phase (by tester)");
+        LOGGER.info("# Fail during testing phase (by tester)");
         item.getState().transferToDoing();
         item.getState().transferToReadyForTesting();
         item.getState().transferToTesting();
         item.getState().transferToTodo();
 
-        System.out.println("\n# Fail during tested phase (by lead developer: not definition of done)");
+        LOGGER.info("\n# Fail during tested phase (by lead developer: not definition of done)");
         item.getState().transferToDoing();
         item.getState().transferToReadyForTesting();
         item.getState().transferToTesting();
         item.getState().transferToTested();
         item.getState().transferToReadyForTesting();
 
-        System.out.println("\n# Success");
+        LOGGER.info("\n# Success");
         item.getState().transferToTesting();
         item.getState().transferToTested();
         item.getState().transferToDone();
@@ -143,7 +146,7 @@ public class Main {
         failedSprint.getState().transferToInProgress();
         failedSprint.getState().transferToInReview();
         failedSprint.getState().transferToFailed();
-        System.out.println();
+        LOGGER.info("");
 
         Sprint finishedSprint = createSprintWithPipeline();
         finishedSprint.getState().transferToInProgress();

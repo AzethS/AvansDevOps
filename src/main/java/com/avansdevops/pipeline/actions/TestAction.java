@@ -1,5 +1,7 @@
 package com.avansdevops.pipeline.actions;
 
+import com.avansdevops.AvansDevOps;
+
 public class TestAction implements Action {
     private final String testingFramework;
 
@@ -13,12 +15,12 @@ public class TestAction implements Action {
     }
 
     public boolean runTests() {
-        System.out.printf("Testing with %s...%n", this.testingFramework);
+        AvansDevOps.LOGGER.info("Running tests with {}...", this.testingFramework);
         return true;
     }
 
     public boolean publishTestResults() {
-        System.out.println("Publishing test results...");
+        AvansDevOps.LOGGER.info("Publishing test results...");
         return true;
     }
 }

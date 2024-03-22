@@ -7,12 +7,12 @@ public abstract class Report {
     private final String contents;
     private ExportStrategy exportStrategy;
 
-    public Report(Sprint sprint, String header, String footer, ExportStrategy reportType) {
+    protected Report(Sprint sprint, String header, String footer, ExportStrategy reportType) {
         this.exportStrategy = reportType;
         this.contents = this.generateReport(header, footer, sprint);
     }
 
-    protected abstract String generate(Sprint sprint);
+    public abstract String generate(Sprint sprint);
 
     private String generateReport(String header, String footer, Sprint sprint) {
         StringBuilder builder = new StringBuilder();

@@ -1,5 +1,6 @@
 package com.avansdevops.sprint.backlog.states;
 
+import com.avansdevops.AvansDevOps;
 import com.avansdevops.sprint.backlog.BacklogItem;
 
 /**
@@ -12,36 +13,36 @@ public class DoneState extends BacklogItemState {
 
     @Override
     public void onStateChange() {
-        System.out.println("State changed to Done");
+        AvansDevOps.LOGGER.info("State changed to Done");
     }
 
     @Override
     public void transferToTodo() {
-        throw new UnsupportedOperationException("Cannot transfer from Done to Todo");
+        throw new IllegalStateException("Cannot transfer from Done to Todo");
     }
 
     @Override
     public void transferToDoing() {
-        throw new UnsupportedOperationException("Cannot transfer from Done to Doing");
+        throw new IllegalStateException("Cannot transfer from Done to Doing");
     }
 
     @Override
     public void transferToReadyForTesting() {
-        throw new UnsupportedOperationException("Cannot transfer from Done to ReadyForTesting");
+        throw new IllegalStateException("Cannot transfer from Done to ReadyForTesting");
     }
 
     @Override
     public void transferToTesting() {
-        throw new UnsupportedOperationException("Cannot transfer from Done to Testing");
+        throw new IllegalStateException("Cannot transfer from Done to Testing");
     }
 
     @Override
     public void transferToTested() {
-        throw new UnsupportedOperationException("Cannot transfer from Done to Tested");
+        throw new IllegalStateException("Cannot transfer from Done to Tested");
     }
 
     @Override
     public void transferToDone() {
-        throw new UnsupportedOperationException("Already in Done state");
+        throw new IllegalStateException("Already in Done state");
     }
 }

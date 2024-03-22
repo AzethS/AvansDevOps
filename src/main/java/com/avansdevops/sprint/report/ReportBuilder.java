@@ -2,26 +2,32 @@ package com.avansdevops.sprint.report;
 
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.sprint.report.export.ExportStrategy;
-import com.avansdevops.sprint.report.export.PdfExportStrategy;
 import com.avansdevops.sprint.report.types.ReportType;
 
 /**
  * Builder Pattern (Creational)
  */
 public class ReportBuilder {
-    private final ReportType reportType;
     private final Sprint sprint;
+    private ReportType reportType;
+    private ExportStrategy exportStrategy;
     private String header;
     private String footer;
-    private ExportStrategy exportStrategy;
 
-    public ReportBuilder(ReportType reportType, Sprint sprint) {
-        this.reportType = reportType;
+    public ReportBuilder(Sprint sprint) {
         this.sprint = sprint;
-
-        this.exportStrategy = new PdfExportStrategy();
         this.header = "";
         this.footer = "";
+    }
+
+    public ReportBuilder type(ReportType reportType) {
+        this.reportType = reportType;
+        return this;
+    }
+
+    public ReportBuilder exportStrategy(ExportStrategy exportStrategy) {
+        this.exportStrategy = exportStrategy;
+        return this;
     }
 
     public ReportBuilder header(String header) {
@@ -34,12 +40,15 @@ public class ReportBuilder {
         return this;
     }
 
-    public ReportBuilder exportStrategy(ExportStrategy exportStrategy) {
-        this.exportStrategy = exportStrategy;
-        return this;
-    }
-
     public Report build() {
+        if (this.reportType == null) {
+            throw new IllegalStateException("Report type is required");
+        }
+
+        if (this.exportStrategy == null) {
+            throw new IllegalStateException("Export strategy is required");
+        }
+
         return this.reportType.factory().create(this.sprint, this.header, this.footer, this.exportStrategy);
     }
 }

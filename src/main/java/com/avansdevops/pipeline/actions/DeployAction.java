@@ -1,5 +1,7 @@
 package com.avansdevops.pipeline.actions;
 
+import com.avansdevops.AvansDevOps;
+
 public class DeployAction implements Action {
     private final String deploymentTarget;
 
@@ -9,7 +11,7 @@ public class DeployAction implements Action {
 
     @Override
     public boolean execute() {
-        System.out.printf("Deploying to %s...%n", this.deploymentTarget);
+        AvansDevOps.LOGGER.info("Deploying to {}...", this.deploymentTarget);
         return true;
     }
 }

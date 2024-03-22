@@ -1,5 +1,6 @@
 package com.avansdevops.sprint.states;
 
+import com.avansdevops.AvansDevOps;
 import com.avansdevops.sprint.Sprint;
 
 public class FinishedState extends SprintState {
@@ -9,32 +10,32 @@ public class FinishedState extends SprintState {
 
     @Override
     public void onStateChange() {
-        System.out.println("State changed to Finished");
+        AvansDevOps.LOGGER.info("State changed to Finished");
         this.context.onFinished();
     }
 
     @Override
     public void transferToPlanned() {
-        throw new UnsupportedOperationException("Cannot transfer from Finished to Planned");
+        throw new IllegalStateException("Cannot transfer from Finished to Planned");
     }
 
     @Override
     public void transferToInProgress() {
-        throw new UnsupportedOperationException("Cannot transfer from Finished to InProgress");
+        throw new IllegalStateException("Cannot transfer from Finished to InProgress");
     }
 
     @Override
     public void transferToInReview() {
-        throw new UnsupportedOperationException("Cannot transfer from Finished to InReview");
+        throw new IllegalStateException("Cannot transfer from Finished to InReview");
     }
 
     @Override
     public void transferToFinished() {
-        throw new UnsupportedOperationException("Already in Finished state");
+        throw new IllegalStateException("Already in Finished state");
     }
 
     @Override
     public void transferToFailed() {
-        throw new UnsupportedOperationException("Cannot transfer from Finished to Failed");
+        throw new IllegalStateException("Cannot transfer from Finished to Failed");
     }
 }

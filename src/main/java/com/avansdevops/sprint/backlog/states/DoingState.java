@@ -1,5 +1,6 @@
 package com.avansdevops.sprint.backlog.states;
 
+import com.avansdevops.AvansDevOps;
 import com.avansdevops.sprint.backlog.BacklogItem;
 
 /**
@@ -13,7 +14,7 @@ public class DoingState extends BacklogItemState {
 
     @Override
     public void onStateChange() {
-        System.out.println("State changed to Doing");
+        AvansDevOps.LOGGER.info("State changed to Doing");
     }
 
     @Override
@@ -23,7 +24,7 @@ public class DoingState extends BacklogItemState {
 
     @Override
     public void transferToDoing() {
-        throw new UnsupportedOperationException("Already in Doing state");
+        throw new IllegalStateException("Already in Doing state");
     }
 
     @Override
@@ -33,16 +34,16 @@ public class DoingState extends BacklogItemState {
 
     @Override
     public void transferToTesting() {
-        throw new UnsupportedOperationException("Cannot transfer from Doing to Testing");
+        throw new IllegalStateException("Cannot transfer from Doing to Testing");
     }
 
     @Override
     public void transferToTested() {
-        throw new UnsupportedOperationException("Cannot transfer from Doing to Tested");
+        throw new IllegalStateException("Cannot transfer from Doing to Tested");
     }
 
     @Override
     public void transferToDone() {
-        throw new UnsupportedOperationException("Cannot transfer from Doing to Done");
+        throw new IllegalStateException("Cannot transfer from Doing to Done");
     }
 }

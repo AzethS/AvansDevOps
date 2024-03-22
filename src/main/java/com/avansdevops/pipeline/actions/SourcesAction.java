@@ -1,5 +1,7 @@
 package com.avansdevops.pipeline.actions;
 
+import com.avansdevops.AvansDevOps;
+
 public class SourcesAction implements Action {
     private final String fetchUrl;
 
@@ -9,7 +11,7 @@ public class SourcesAction implements Action {
 
     @Override
     public boolean execute() {
-        System.out.printf("Fetching sources from %s...%n", this.fetchUrl);
+        AvansDevOps.LOGGER.info("Fetching sources from {}...", this.fetchUrl);
         return true;
     }
 }

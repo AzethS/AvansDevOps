@@ -1,5 +1,7 @@
 package com.avansdevops.pipeline.actions;
 
+import com.avansdevops.AvansDevOps;
+
 import java.util.List;
 
 public class UtilityAction implements Action {
@@ -12,7 +14,7 @@ public class UtilityAction implements Action {
     @Override
     public boolean execute() {
         for (String command : this.commands) {
-            System.out.println("Executing command: " + command);
+            AvansDevOps.LOGGER.info("Executing command: {}", command);
         }
         return true;
     }

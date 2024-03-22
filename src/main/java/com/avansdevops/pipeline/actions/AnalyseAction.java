@@ -1,5 +1,7 @@
 package com.avansdevops.pipeline.actions;
 
+import com.avansdevops.AvansDevOps;
+
 public class AnalyseAction implements Action {
     private final String analysisTool;
 
@@ -9,7 +11,7 @@ public class AnalyseAction implements Action {
 
     @Override
     public boolean execute() {
-        System.out.printf("Performing code analysis with %s...%n", this.analysisTool);
+        AvansDevOps.LOGGER.info("Performing code analysis with {}...", this.analysisTool);
         return true;
     }
 }
