@@ -2,22 +2,25 @@ package com.avansdevops.sprint.states;
 
 import com.avansdevops.sprint.Sprint;
 
-public abstract class SprintState {
-    protected final Sprint context;
+public enum SprintState {
+    PLANNED(PlannedState::new),
+    IN_PROGRESS(InProgressState::new),
+    IN_REVIEW(InReviewState::new),
+    FINISHED(FinishedState::new),
+    FAILED(FailedState::new);
 
-    protected SprintState(Sprint context) {
-        this.context = context;
+    private final SprintStateFactory factory;
+
+    SprintState(SprintStateFactory factory) {
+        this.factory = factory;
     }
 
-    public abstract void onStateChange();
+    public AbstractSprintState create(Sprint context) {
+        return this.factory.create(context, this);
+    }
 
-    public abstract void transferToPlanned();
-
-    public abstract void transferToInProgress();
-
-    public abstract void transferToInReview();
-
-    public abstract void transferToFinished();
-
-    public abstract void transferToFailed();
+    @FunctionalInterface
+    public interface SprintStateFactory {
+        AbstractSprintState create(Sprint context, SprintState state);
+    }
 }

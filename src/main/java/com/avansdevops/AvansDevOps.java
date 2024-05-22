@@ -100,14 +100,16 @@ public class AvansDevOps {
         item.getState().transferToTesting();
         item.getState().transferToTodo();
 
-        LOGGER.info("\n# Fail during tested phase (by lead developer: not definition of done)");
+        LOGGER.info("");
+        LOGGER.info("# Fail during tested phase (by lead developer: not definition of done)");
         item.getState().transferToDoing();
         item.getState().transferToReadyForTesting();
         item.getState().transferToTesting();
         item.getState().transferToTested();
         item.getState().transferToReadyForTesting();
 
-        LOGGER.info("\n# Success");
+        LOGGER.info("");
+        LOGGER.info("# Success");
         item.getState().transferToTesting();
         item.getState().transferToTested();
         item.getState().transferToDone();

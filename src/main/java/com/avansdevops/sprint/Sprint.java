@@ -3,7 +3,7 @@ package com.avansdevops.sprint;
 
 import com.avansdevops.notifications.observer.Publisher;
 import com.avansdevops.sprint.backlog.BacklogItem;
-import com.avansdevops.sprint.states.PlannedState;
+import com.avansdevops.sprint.states.AbstractSprintState;
 import com.avansdevops.sprint.states.SprintState;
 import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Set;
 
 public class Sprint extends Publisher<User> {
-    private SprintState state = new PlannedState(this);
+    private AbstractSprintState state = SprintState.PLANNED.create(this);
     private final Set<User> participants = new HashSet<>();
     private final List<BacklogItem> backlog = new ArrayList<>();
 
-    public void setState(SprintState state) {
+    public void setState(AbstractSprintState state) {
         this.state = state;
         state.onStateChange();
     }
 
-    public SprintState getState() {
+    public AbstractSprintState getState() {
         return this.state;
     }
 
