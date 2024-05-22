@@ -1,6 +1,5 @@
 package com.avansdevops.sprint.backlog.states;
 
-import com.avansdevops.AvansDevOps;
 import com.avansdevops.sprint.backlog.BacklogItem;
 
 /**
@@ -8,42 +7,17 @@ import com.avansdevops.sprint.backlog.BacklogItem;
  * Observer Pattern (Behavioral)
  */
 public class DoingState extends BacklogItemState {
-    protected DoingState(BacklogItem context) {
-        super(context);
-    }
-
-    @Override
-    public void onStateChange() {
-        AvansDevOps.LOGGER.info("State changed to Doing");
+    protected DoingState(BacklogItem context, BacklogItemStateType stateType) {
+        super(context, stateType);
     }
 
     @Override
     public void transferToTodo() {
-        this.context.setState(new TodoState(this.context));
-    }
-
-    @Override
-    public void transferToDoing() {
-        throw new IllegalStateException("Already in Doing state");
+        this.setState(BacklogItemStateType.TODO);
     }
 
     @Override
     public void transferToReadyForTesting() {
-        this.context.setState(new ReadyForTestingState(this.context));
-    }
-
-    @Override
-    public void transferToTesting() {
-        throw new IllegalStateException("Cannot transfer from Doing to Testing");
-    }
-
-    @Override
-    public void transferToTested() {
-        throw new IllegalStateException("Cannot transfer from Doing to Tested");
-    }
-
-    @Override
-    public void transferToDone() {
-        throw new IllegalStateException("Cannot transfer from Doing to Done");
+        this.setState(BacklogItemStateType.READY_FOR_TESTING);
     }
 }

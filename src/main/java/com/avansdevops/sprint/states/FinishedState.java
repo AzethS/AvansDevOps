@@ -2,14 +2,14 @@ package com.avansdevops.sprint.states;
 
 import com.avansdevops.sprint.Sprint;
 
-public class FinishedState extends AbstractSprintState {
-    protected FinishedState(Sprint context, SprintState state) {
-        super(context, state);
+public class FinishedState extends SprintState {
+    protected FinishedState(Sprint context, SprintStateType stateType) {
+        super(context, stateType);
     }
 
     @Override
-    public void onStateChange() {
-        super.onStateChange();
+    public void onStateChanged() {
+        super.onStateChanged();
         this.context.onFinished();
     }
 }

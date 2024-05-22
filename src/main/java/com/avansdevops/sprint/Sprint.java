@@ -3,8 +3,9 @@ package com.avansdevops.sprint;
 
 import com.avansdevops.notifications.observer.Publisher;
 import com.avansdevops.sprint.backlog.BacklogItem;
-import com.avansdevops.sprint.states.AbstractSprintState;
 import com.avansdevops.sprint.states.SprintState;
+import com.avansdevops.sprint.states.SprintStateType;
+import com.avansdevops.states.StateContext;
 import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
 
@@ -13,18 +14,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Sprint extends Publisher<User> {
-    private AbstractSprintState state = SprintState.PLANNED.create(this);
+public class Sprint extends Publisher<User> implements StateContext<SprintState> {
+    private SprintState state = SprintStateType.PLANNED.create(this);
     private final Set<User> participants = new HashSet<>();
     private final List<BacklogItem> backlog = new ArrayList<>();
 
-    public void setState(AbstractSprintState state) {
-        this.state = state;
-        state.onStateChange();
+    @Override
+    public SprintState getState() {
+        return this.state;
     }
 
-    public AbstractSprintState getState() {
-        return this.state;
+    @Override
+    public void setState(SprintState state) {
+        this.state = state;
     }
 
     public void addBacklogItem(BacklogItem item) {

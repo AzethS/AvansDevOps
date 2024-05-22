@@ -1,28 +1,37 @@
 package com.avansdevops.sprint.backlog.states;
 
 import com.avansdevops.sprint.backlog.BacklogItem;
+import com.avansdevops.states.State;
 
 /**
  * State Pattern (Behavioral)
  */
-public abstract class BacklogItemState {
-    protected final BacklogItem context;
-
-    protected BacklogItemState(BacklogItem context) {
-        this.context = context;
+public abstract class BacklogItemState extends State<BacklogItemState, BacklogItem> {
+    protected BacklogItemState(BacklogItem context, BacklogItemStateType state) {
+        super(context, state);
     }
 
-    public abstract void onStateChange();
+    public void transferToTodo() {
+        this.throwCannotTransfer(BacklogItemStateType.TODO);
+    }
 
-    public abstract void transferToTodo();
+    public void transferToDoing() {
+        this.throwCannotTransfer(BacklogItemStateType.DOING);
+    }
 
-    public abstract void transferToDoing();
+    public void transferToReadyForTesting() {
+        this.throwCannotTransfer(BacklogItemStateType.READY_FOR_TESTING);
+    }
 
-    public abstract void transferToReadyForTesting();
+    public void transferToTesting() {
+        this.throwCannotTransfer(BacklogItemStateType.TESTING);
+    }
 
-    public abstract void transferToTesting();
+    public void transferToTested() {
+        this.throwCannotTransfer(BacklogItemStateType.TESTED);
+    }
 
-    public abstract void transferToTested();
-
-    public abstract void transferToDone();
+    public void transferToDone() {
+        this.throwCannotTransfer(BacklogItemStateType.DONE);
+    }
 }
