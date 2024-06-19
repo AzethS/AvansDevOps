@@ -34,6 +34,8 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${project.junit_version}"
 
     testImplementation "org.mockito:mockito-core:${project.mockito_version}"
+    testImplementation "io.github.hakky54:logcaptor:${logcaptor_version}"
+    testImplementation("org.assertj:assertj-core:${project.assertj_version}")
 }
 
 sonar {

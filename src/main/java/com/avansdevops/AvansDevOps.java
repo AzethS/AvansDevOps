@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class AvansDevOps {
-    public static final Logger LOGGER = LogManager.getLogger("Avans DevOps");
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) {
         separator("Report");
@@ -66,19 +66,19 @@ public class AvansDevOps {
         BacklogItem item = new BacklogItem(new Sprint(), "Exporting Strategy");
         Discussion discussion = new Discussion(item);
 
-        discussion.addComment(discussion.commentBuilder()
+        discussion.addComment(discussion.comment()
                 .author(user3)
                 .content("This is a simple comment")
                 .build()
         );
 
-        discussion.addComment(discussion.commentBuilder()
+        discussion.addComment(discussion.comment()
                 .author(user)
                 .content("This is a comment with replies")
-                .addReply(discussion.commentBuilder()
+                .addReply(discussion.comment()
                         .author(user2)
                         .content("This is a reply")
-                        .addReply(discussion.commentBuilder()
+                        .addReply(discussion.comment()
                                 .author(user3)
                                 .content("This is a reply to a reply")
                         )

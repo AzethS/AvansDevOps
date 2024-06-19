@@ -28,7 +28,7 @@ public class Discussion implements DiscussionVisitable {
         return this.item;
     }
 
-    public CommentBuilder commentBuilder() {
+    public CommentBuilder comment() {
         return new CommentBuilder(this);
     }
 

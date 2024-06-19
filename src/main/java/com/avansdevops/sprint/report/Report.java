@@ -39,6 +39,10 @@ public abstract class Report {
         this.exportStrategy = exportStrategy;
     }
 
+    public ExportStrategy getExportStrategy() {
+        return this.exportStrategy;
+    }
+
     public String getContents() {
         return this.contents;
     }
