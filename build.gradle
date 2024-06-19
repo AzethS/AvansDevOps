@@ -43,6 +43,9 @@ sonar {
         property("sonar.projectKey", "AzethS_AvansDevOps")
         property("sonar.organization", "azeths")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.exclusions", "**/src/main/java/com/avansdevops/AvansDevOps.java") // Exclude main class from coverage
+        property("sonar.exclusions", "**/src/main/java/com/avansdevops/AvansDevOps.java, " + // Exclude main class from coverage
+                "**/src/main/java/com/avansdevops/sprint/backlog/states/BacklogItemState.java, " + // Sonarcloud incorrectly detects the coverage of this class
+                "**/src/main/java/com/avansdevops/sprint/states/SprintState.java" // Sonarcloud incorrectly detects the coverage of this class
+        )
     }
 }
