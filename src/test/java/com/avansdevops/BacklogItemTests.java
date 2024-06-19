@@ -19,7 +19,8 @@ class BacklogItemTests {
 
     @Test
     void backlogItemWithDoneStateShouldBeDone() {
-        BacklogItem item = new BacklogItem(new Sprint(), "Test Item | Done");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item | Done");
         item.setState(BacklogItemStateType.DONE.create(item));
 
         Assertions.assertTrue(item.isDone());
@@ -72,7 +73,8 @@ class BacklogItemTests {
             "transferToDone, true"
     })
     void transferringFromTodoToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
-        BacklogItem item = new BacklogItem(new Sprint(), "Test Item | Todo");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item | Todo");
 
         assertThrows(item.getState(), methodName, shouldThrow);
     }
@@ -87,7 +89,8 @@ class BacklogItemTests {
             "transferToDone, true"
     })
     void transferringFromDoingToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
-        BacklogItem item = new BacklogItem(new Sprint(), "Test Item | Doing");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item | Doing");
         item.setState(BacklogItemStateType.DOING.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -103,7 +106,8 @@ class BacklogItemTests {
             "transferToDone, true"
     })
     void transferringFromReadyForTestingToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
-        BacklogItem item = new BacklogItem(new Sprint(), "Test Item | Ready For Testing");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item | ReadyForTesting");
         item.setState(BacklogItemStateType.READY_FOR_TESTING.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -119,7 +123,8 @@ class BacklogItemTests {
             "transferToDone, true"
     })
     void transferringFromTestingToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
-        BacklogItem item = new BacklogItem(new Sprint(), "Test Item | Testing");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item | Testing");
         item.setState(BacklogItemStateType.TESTING.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -135,7 +140,8 @@ class BacklogItemTests {
             "transferToDone, false"
     })
     void transferringFromTestedToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
-        BacklogItem item = new BacklogItem(new Sprint(), "Test Item | Tested");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item | Tested");
         item.setState(BacklogItemStateType.TESTED.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -151,7 +157,8 @@ class BacklogItemTests {
             "transferToDone, true"
     })
     void transferringFromDoneShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
-        BacklogItem item = new BacklogItem(new Sprint(), "Test Item | Done");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item | Done");
         item.setState(BacklogItemStateType.DONE.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -182,7 +189,7 @@ class BacklogItemTests {
         sprint.addParticipant(scrumMaster);
         sprint.addParticipant(tester);
 
-        BacklogItem item = new BacklogItem(sprint, "Backlog Item");
+        BacklogItem item = sprint.addBacklogItem("Backlog Item");
         item.setState(stateType.create(item));
         return new MockedBacklogItem(item, leadDeveloperStrategy, scrumMasterStrategy, testerStrategy);
     }

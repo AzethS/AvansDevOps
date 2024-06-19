@@ -14,9 +14,16 @@ public class PackageAction implements Action {
     @Override
     public boolean execute() {
         for (String packageId : this.packages) {
-            AvansDevOps.LOGGER.info("Installing package {}...", packageId);
+            if (!this.installPackage(packageId)) {
+                return false;
+            }
         }
 
+        return true;
+    }
+
+    public boolean installPackage(String packageId) {
+        AvansDevOps.LOGGER.info("Installing package {}...", packageId);
         return true;
     }
 }

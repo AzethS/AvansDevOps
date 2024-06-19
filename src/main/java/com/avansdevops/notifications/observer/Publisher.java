@@ -18,6 +18,10 @@ public abstract class Publisher<T extends Subscriber> {
         this.subscribers.remove(subscriber);
     }
 
+    public List<T> getSubscribers() {
+        return this.subscribers;
+    }
+
     public void notifySubscribers(String message) {
         for (T subscriber : this.subscribers) {
             subscriber.update(message);

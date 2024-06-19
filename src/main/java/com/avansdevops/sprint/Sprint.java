@@ -29,8 +29,10 @@ public class Sprint extends Publisher<User> implements StateContext<SprintState>
         this.state = state;
     }
 
-    public void addBacklogItem(BacklogItem item) {
+    public BacklogItem addBacklogItem(String title) {
+        BacklogItem item = new BacklogItem(this, title);
         this.backlog.add(item);
+        return item;
     }
 
     public void removeBacklogItem(BacklogItem item) {

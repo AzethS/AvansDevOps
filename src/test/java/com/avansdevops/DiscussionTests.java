@@ -37,7 +37,8 @@ class DiscussionTests {
     void addCommentToFinishedBacklogItemShouldFail() {
         User user = new User("John");
 
-        BacklogItem item = new BacklogItem(new Sprint(), "Finished Backlog Item");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Finished Backlog Item");
         item.setState(BacklogItemStateType.DONE.create(item));
 
         Discussion discussion = new Discussion(item);
@@ -54,7 +55,8 @@ class DiscussionTests {
         User user = new User("John");
         User user2 = new User("Jane");
 
-        BacklogItem item = new BacklogItem(new Sprint(), "Finished Backlog Item");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Finished Backlog Item");
         item.setState(BacklogItemStateType.DONE.create(item));
 
         Discussion discussion = new Discussion(item);
@@ -131,7 +133,8 @@ class DiscussionTests {
         User user2 = new User("Jane");
         User user3 = new User("Jack");
 
-        BacklogItem item = new BacklogItem(new Sprint(), "Todo Backlog Item");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Todo Backlog Item");
         Discussion discussion = new Discussion(item);
 
         discussion.addComment(discussion.comment()

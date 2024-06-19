@@ -63,7 +63,8 @@ public class AvansDevOps {
         User user2 = new User("Jane");
         User user3 = new User("Jack");
 
-        BacklogItem item = new BacklogItem(new Sprint(), "Exporting Strategy");
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Exporting Strategy");
         Discussion discussion = new Discussion(item);
 
         discussion.addComment(discussion.comment()
@@ -92,7 +93,7 @@ public class AvansDevOps {
     private static void testBacklogStates() {
         Sprint sprint = createSprintWithPipeline();
 
-        BacklogItem item = new BacklogItem(sprint, "State Patterns");
+        BacklogItem item = sprint.addBacklogItem("State Patterns");
 
         LOGGER.info("# Fail during testing phase (by tester)");
         item.getState().transferToDoing();

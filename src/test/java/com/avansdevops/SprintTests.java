@@ -4,6 +4,7 @@ import com.avansdevops.notifications.strategy.NotificationStrategy;
 import com.avansdevops.pipeline.Pipeline;
 import com.avansdevops.sprint.ReleaseSprint;
 import com.avansdevops.sprint.Sprint;
+import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.states.SprintStateType;
 import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
@@ -19,6 +20,25 @@ import java.lang.reflect.Method;
 class SprintTests {
 
     @Test
+    void addBacklogItemShouldSucceed() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item");
+
+        Assertions.assertTrue(sprint.getBacklog().contains(item));
+    }
+
+    @Test
+    void removeBacklogItemShouldSucceed() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item");
+
+        Assertions.assertTrue(sprint.getBacklog().contains(item));
+
+        sprint.removeBacklogItem(item);
+        Assertions.assertFalse(sprint.getBacklog().contains(item));
+    }
+
+    @Test
     void addParticipantShouldSucceed() {
         Sprint sprint = new Sprint();
         User user = new User("John", Role.DEVELOPER);
@@ -28,6 +48,27 @@ class SprintTests {
         Assertions.assertDoesNotThrow(() -> sprint.addParticipant(user));
         Assertions.assertDoesNotThrow(() -> sprint.addParticipant(user2));
         Assertions.assertDoesNotThrow(() -> sprint.addParticipant(user3));
+    }
+
+    @Test
+    void addParticipantShouldSubscribeUser() {
+        Sprint sprint = new Sprint();
+        User user = new User("John", Role.DEVELOPER);
+
+        Assertions.assertDoesNotThrow(() -> sprint.addParticipant(user));
+        Assertions.assertTrue(sprint.getSubscribers().contains(user));
+    }
+
+    @Test
+    void removeParticipantShouldUnsubscribeUser() {
+        Sprint sprint = new Sprint();
+        User user = new User("John", Role.DEVELOPER);
+        sprint.addParticipant(user);
+
+        Assertions.assertTrue(sprint.getSubscribers().contains(user));
+        sprint.removeParticipant(user);
+
+        Assertions.assertFalse(sprint.getSubscribers().contains(user));
     }
 
     @Test

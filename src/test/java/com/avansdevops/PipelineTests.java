@@ -8,6 +8,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 
+import java.util.List;
+
 class PipelineTests {
 
     @ParameterizedTest
@@ -20,6 +22,18 @@ class PipelineTests {
 
         Mockito.when(mock.runTests()).thenReturn(succeedsTest);
         Mockito.when(mock.publishTestResults()).thenReturn(succeedsTestPublish);
+
+        Assertions.assertFalse(mock.execute());
+    }
+
+    @Test
+    void packageActionShouldFailIfAnyPackageFails() {
+        PackageAction mock = Mockito.spy(new PackageAction(List.of(
+                "com.google.code.gson:gson:2.10.1",
+                "junit:junit:4.13.2"
+        )));
+
+        Mockito.when(mock.installPackage(Mockito.anyString())).thenReturn(false);
 
         Assertions.assertFalse(mock.execute());
     }
