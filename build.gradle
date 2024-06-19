@@ -43,5 +43,6 @@ sonar {
         property("sonar.projectKey", "AzethS_AvansDevOps")
         property("sonar.organization", "azeths")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.exclusions", "**/src/main/java/com/avansdevops/AvansDevOps.java") // Exclude main class from coverage
     }
 }

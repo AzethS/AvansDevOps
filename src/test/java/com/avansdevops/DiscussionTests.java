@@ -1,6 +1,7 @@
 package com.avansdevops;
 
 import com.avansdevops.discussion.Comment;
+import com.avansdevops.discussion.CommentBuilder;
 import com.avansdevops.discussion.Discussion;
 import com.avansdevops.discussion.visitor.DiscussionPrintVisitor;
 import com.avansdevops.discussion.visitor.DiscussionVisitor;
@@ -69,10 +70,8 @@ class DiscussionTests {
     void buildCommentWithoutAuthorShouldFail() {
         Discussion discussion = createEditableDiscussion();
 
-        Assertions.assertThrows(IllegalStateException.class, () -> discussion.comment()
-                .content("This is a simple comment")
-                .build()
-        );
+        CommentBuilder builder = discussion.comment().content("This is a simple comment");
+        Assertions.assertThrows(IllegalStateException.class, builder::build);
     }
 
     @Test
@@ -80,10 +79,8 @@ class DiscussionTests {
         User user = new User("John");
         Discussion discussion = createEditableDiscussion();
 
-        Assertions.assertThrows(IllegalStateException.class, () -> discussion.comment()
-                .author(user)
-                .build()
-        );
+        CommentBuilder builder = discussion.comment().author(user);
+        Assertions.assertThrows(IllegalStateException.class, builder::build);
     }
 
     @Test

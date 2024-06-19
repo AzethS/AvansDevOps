@@ -6,8 +6,8 @@ import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.backlog.states.BacklogItemStateType;
 import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
-import nl.altindag.log.LogCaptor;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
@@ -16,23 +16,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 class BacklogItemTests {
-    private static LogCaptor logCaptor;
-
-    @BeforeAll
-    public static void setupLogCaptor() {
-        logCaptor = LogCaptor.forClass(AvansDevOps.class);
-        logCaptor.disableConsoleOutput();
-    }
-
-    @AfterEach
-    public void clearLogs() {
-        logCaptor.clearLogs();
-    }
-
-    @AfterAll
-    public static void tearDown() {
-        logCaptor.close();
-    }
 
     @Test
     void backlogItemWithDoneStateShouldBeDone() {
@@ -44,7 +27,7 @@ class BacklogItemTests {
 
     @Test
     void backlogItemMovedToReadyForTestingShouldNotifyTesters() {
-        MockedBacklogItem mock = createMockedBacklogItemWithState(BacklogItemStateType.DOING, "Test Item 1");
+        MockedBacklogItem mock = createMockedBacklogItemWithState(BacklogItemStateType.DOING);
 
         mock.item.getState().transferToReadyForTesting();
 
@@ -56,7 +39,7 @@ class BacklogItemTests {
 
     @Test
     void backlogItemMovedFromTestingToTodoShouldNotifyScrumMaster() {
-        MockedBacklogItem mock = createMockedBacklogItemWithState(BacklogItemStateType.TESTING, "Test Item 2");
+        MockedBacklogItem mock = createMockedBacklogItemWithState(BacklogItemStateType.TESTING);
 
         mock.item.getState().transferToTodo();
 
@@ -67,8 +50,8 @@ class BacklogItemTests {
     }
 
     @Test
-    void backlogItemMovedToTestedShouldNotifyLeadDevelopers() throws NoSuchMethodException {
-        MockedBacklogItem mock = createMockedBacklogItemWithState(BacklogItemStateType.TESTING, "Test Item 3");
+    void backlogItemMovedToTestedShouldNotifyLeadDevelopers() {
+        MockedBacklogItem mock = createMockedBacklogItemWithState(BacklogItemStateType.TESTING);
 
         mock.item.getState().transferToTested();
 
@@ -167,7 +150,7 @@ class BacklogItemTests {
             "transferToTested, true",
             "transferToDone, true"
     })
-    void transferringFromDoneToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
+    void transferringFromDoneShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
         BacklogItem item = new BacklogItem(new Sprint(), "Test Item | Done");
         item.setState(BacklogItemStateType.DONE.create(item));
 
@@ -184,22 +167,22 @@ class BacklogItemTests {
         }
     }
 
-    private static MockedBacklogItem createMockedBacklogItemWithState(BacklogItemStateType stateType, String name) {
+    private static MockedBacklogItem createMockedBacklogItemWithState(BacklogItemStateType stateType) {
         Sprint sprint = new Sprint();
 
         NotificationStrategy leadDeveloperStrategy = Mockito.mock(NotificationStrategy.class);
         NotificationStrategy scrumMasterStrategy = Mockito.mock(NotificationStrategy.class);
         NotificationStrategy testerStrategy = Mockito.mock(NotificationStrategy.class);
 
-        User leadDeveloper = new User("Lead_developer", Role.LEAD_DEVELOPER, leadDeveloperStrategy);
-        User scrumMaster = new User("Scrum_master", Role.SCRUM_MASTER, scrumMasterStrategy);
+        User leadDeveloper = new User("LeadDeveloper", Role.LEAD_DEVELOPER, leadDeveloperStrategy);
+        User scrumMaster = new User("ScrumMaster", Role.SCRUM_MASTER, scrumMasterStrategy);
         User tester = new User("Tester", Role.TESTER, testerStrategy);
 
         sprint.addParticipant(leadDeveloper);
         sprint.addParticipant(scrumMaster);
         sprint.addParticipant(tester);
 
-        BacklogItem item = new BacklogItem(sprint, name);
+        BacklogItem item = new BacklogItem(sprint, "Backlog Item");
         item.setState(stateType.create(item));
         return new MockedBacklogItem(item, leadDeveloperStrategy, scrumMasterStrategy, testerStrategy);
     }
