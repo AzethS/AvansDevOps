@@ -7,7 +7,8 @@ import com.avansdevops.sprint.report.ReportFactory;
  */
 public enum ReportType {
     BURNDOWN(BurndownReport::new),
-    EFFORT_POINTS(EffortPointsReport::new);
+    EFFORT_POINTS(EffortPointsReport::new),
+    TEAM(TeamReport::new);
 
     private final ReportFactory factory;
 

@@ -1,5 +1,6 @@
 package com.avansdevops.sprint.backlog.states;
 
+import com.avansdevops.sprint.backlog.Activity;
 import com.avansdevops.sprint.backlog.BacklogItem;
 
 /**
@@ -18,6 +19,19 @@ public class DoingState extends BacklogItemState {
 
     @Override
     public void transferToReadyForTesting() {
-        this.setState(BacklogItemStateType.READY_FOR_TESTING);
+        if (this.isFinished()) {
+            this.setState(BacklogItemStateType.READY_FOR_TESTING);
+        } else {
+            throw new IllegalStateException("Not all activities have been finished!");
+        }
+    }
+
+    private boolean isFinished() {
+        for (Activity activity : this.context.getActivities()) {
+            if (!activity.isFinished()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -7,17 +7,20 @@ import com.avansdevops.sprint.backlog.states.DoneState;
 import com.avansdevops.states.StateContext;
 import com.avansdevops.user.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * State Pattern (Behavioral)
  */
 public class BacklogItem implements StateContext<BacklogItemState> {
-    private final Sprint sprint;
+    private final List<Activity> activities = new ArrayList<>();
     private final String title;
+    private Sprint sprint;
     private User assignedUser;
     private BacklogItemState state = BacklogItemStateType.TODO.create(this);
 
-    public BacklogItem(Sprint sprint, String title) {
-        this.sprint = sprint;
+    public BacklogItem(String title) {
         this.title = title;
     }
 
@@ -31,7 +34,15 @@ public class BacklogItem implements StateContext<BacklogItemState> {
         return this.state;
     }
 
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
+    }
+
     public void setAssignedUser(User user) {
+        if (!user.getRole().isDeveloper()) {
+            throw new IllegalArgumentException("User is not a developer!");
+        }
+
         this.assignedUser = user;
     }
 
@@ -40,6 +51,9 @@ public class BacklogItem implements StateContext<BacklogItemState> {
     }
 
     public Sprint getSprint() {
+        if (this.sprint == null) {
+            throw new IllegalStateException("Sprint is not set for this backlog item!");
+        }
         return this.sprint;
     }
 
@@ -49,5 +63,17 @@ public class BacklogItem implements StateContext<BacklogItemState> {
 
     public User getAssignedUser() {
         return this.assignedUser;
+    }
+
+    public List<Activity> getActivities() {
+        return this.activities;
+    }
+
+    public void addActivity(Activity activity) {
+        this.activities.add(activity);
+    }
+
+    public void removeActivity(Activity activity) {
+        this.activities.remove(activity);
     }
 }

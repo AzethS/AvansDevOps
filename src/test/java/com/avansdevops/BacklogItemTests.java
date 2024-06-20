@@ -2,6 +2,7 @@ package com.avansdevops;
 
 import com.avansdevops.notifications.strategy.NotificationStrategy;
 import com.avansdevops.sprint.Sprint;
+import com.avansdevops.sprint.backlog.Activity;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.backlog.states.BacklogItemStateType;
 import com.avansdevops.user.Role;
@@ -60,7 +61,56 @@ class BacklogItemTests {
 
         Mockito.verify(mock.scrumMaster, Mockito.times(0)).sendNotification(Mockito.anyString());
         Mockito.verify(mock.tester, Mockito.times(0)).sendNotification(Mockito.anyString());
+    }
 
+    @Test
+    void backlogItemAssignNonDeveloperUserShouldFail() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item");
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> item.setAssignedUser(new User("Tester", Role.TESTER)));
+    }
+
+    @Test
+    void activityAssignNonDeveloperUserShouldFail() {
+        Activity activity = new Activity("Test Activity");
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> activity.setAssignedUser(new User("Tester", Role.TESTER)));
+    }
+
+    @Test
+    void transferringFromDoingToReadyForTestingShouldFailIfActivitiesNotFinished() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item");
+        item.setState(BacklogItemStateType.DOING.create(item));
+
+        Activity unfinishedActivity = new Activity("Unfinished Activity");
+        Activity finishedActivity = new Activity("Finished Activity");
+
+        item.addActivity(finishedActivity);
+        item.addActivity(unfinishedActivity);
+
+        finishedActivity.finish();
+
+        Assertions.assertThrows(IllegalStateException.class, () -> item.getState().transferToReadyForTesting());
+    }
+
+    @Test
+    void transferringFromDoingToReadyForTestingShouldSucceedIfActivitiesHaveFinished() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = sprint.addBacklogItem("Test Item");
+        item.setState(BacklogItemStateType.DOING.create(item));
+
+        Activity finishedActivity = new Activity("Finished Activity");
+        Activity finishedActivity2 = new Activity("Finished Activity 2");
+
+        item.addActivity(finishedActivity);
+        item.addActivity(finishedActivity2);
+
+        finishedActivity.finish();
+        finishedActivity2.finish();
+
+        Assertions.assertDoesNotThrow(() -> item.getState().transferToReadyForTesting());
     }
 
     @ParameterizedTest

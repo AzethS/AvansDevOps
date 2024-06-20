@@ -6,5 +6,9 @@ public enum Role {
     SCRUM_MASTER,
     PRODUCT_OWNER,
     TESTER,
-    UNKNOWN
+    UNKNOWN;
+
+    public boolean isDeveloper() {
+        return this == DEVELOPER || this == LEAD_DEVELOPER;
+    }
 }
