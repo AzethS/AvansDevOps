@@ -4,6 +4,7 @@ import com.avansdevops.notifications.strategy.NotificationStrategy;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.sprint.backlog.Activity;
 import com.avansdevops.sprint.backlog.BacklogItem;
+import com.avansdevops.sprint.backlog.states.BacklogItemState;
 import com.avansdevops.sprint.backlog.states.BacklogItemStateType;
 import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
@@ -68,14 +69,16 @@ class BacklogItemTests {
         Sprint sprint = new Sprint();
         BacklogItem item = sprint.addBacklogItem("Test Item");
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> item.setAssignedUser(new User("Tester", Role.TESTER)));
+        User user = new User("Tester", Role.TESTER);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> item.setAssignedUser(user));
     }
 
     @Test
     void activityAssignNonDeveloperUserShouldFail() {
         Activity activity = new Activity("Test Activity");
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> activity.setAssignedUser(new User("Tester", Role.TESTER)));
+        User user = new User("Tester", Role.TESTER);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> activity.setAssignedUser(user));
     }
 
     @Test
@@ -92,7 +95,8 @@ class BacklogItemTests {
 
         finishedActivity.finish();
 
-        Assertions.assertThrows(IllegalStateException.class, () -> item.getState().transferToReadyForTesting());
+        BacklogItemState state = item.getState();
+        Assertions.assertThrows(IllegalStateException.class, state::transferToReadyForTesting);
     }
 
     @Test

@@ -12,7 +12,7 @@ public class Forum {
     public void addDiscussion(Discussion discussion) {
         this.discussions.add(discussion);
         this.discussions.sort(Comparator.comparing((Discussion d) -> !d.isEditable())
-                .thenComparing((d) -> d.getItem().getTitle())
+                .thenComparing(d -> d.getItem().getTitle())
         );
     }
 

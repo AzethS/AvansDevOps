@@ -19,19 +19,21 @@ class ProjectTests {
     @Test
     void repositoryPushWithoutCommitShouldFail() {
         Project project = new Project("AvansDevOps", new Repository("https://github.com/AzethS/AvansDevOps"));
+        Repository repo = project.getRepo();
 
-        Assertions.assertThrows(IllegalStateException.class, () -> project.getRepo().push("a1b2c3"));
+        Assertions.assertThrows(IllegalStateException.class, () -> repo.push("a1b2c3"));
     }
 
     @Test
     void repositoryPushWithRemoteCommitShouldFail() {
         Project project = new Project("AvansDevOps", new Repository("https://github.com/AzethS/AvansDevOps"));
+        Repository repo = project.getRepo();
 
         Commit commit = new Commit("Initial commit", Map.of());
-        project.getRepo().commit("a1b2c3", commit);
-        project.getRepo().push("a1b2c3");
+        repo.commit("a1b2c3", commit);
+        repo.push("a1b2c3");
 
-        Assertions.assertThrows(IllegalStateException.class, () -> project.getRepo().push("a1b2c3"));
+        Assertions.assertThrows(IllegalStateException.class, () -> repo.push("a1b2c3"));
     }
 
     @Test
