@@ -2,6 +2,9 @@ package com.avansdevops.states;
 
 import com.avansdevops.AvansDevOps;
 
+/**
+ * State Pattern (Behavioral)
+ */
 public class State<S extends State<S, C>, C extends StateContext<S>> {
     private final StateType<S, C> stateType;
     protected final C context;

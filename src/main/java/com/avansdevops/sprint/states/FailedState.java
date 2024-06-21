@@ -3,6 +3,10 @@ package com.avansdevops.sprint.states;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.user.Role;
 
+/**
+ * State Pattern (Behavioral)
+ * Observer pattern (Behavioral)
+ */
 public class FailedState extends SprintState {
     protected FailedState(Sprint context, SprintStateType stateType) {
         super(context, stateType);

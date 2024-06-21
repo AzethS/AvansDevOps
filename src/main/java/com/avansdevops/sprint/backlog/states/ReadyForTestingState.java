@@ -5,6 +5,7 @@ import com.avansdevops.user.Role;
 
 /**
  * State Pattern (Behavioral)
+ * Observer Pattern (Behavioral)
  */
 public class ReadyForTestingState extends BacklogItemState {
     protected ReadyForTestingState(BacklogItem context, BacklogItemStateType stateType) {

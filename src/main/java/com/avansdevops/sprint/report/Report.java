@@ -3,6 +3,9 @@ package com.avansdevops.sprint.report;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.sprint.report.export.ExportStrategy;
 
+/**
+ * Strategy Pattern (Behavioral)
+ */
 public abstract class Report {
     private final String contents;
     private ExportStrategy exportStrategy;

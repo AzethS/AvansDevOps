@@ -14,6 +14,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * State Pattern (Behavioral)
+ * Observer pattern (Behavioral)
+ */
 public class Sprint extends Publisher<User> implements StateContext<SprintState> {
     private SprintState state = SprintStateType.PLANNED.create(this);
     private final Set<User> participants = new HashSet<>();

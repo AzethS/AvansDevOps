@@ -3,6 +3,10 @@ package com.avansdevops.sprint.states;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.states.StateType;
 
+/**
+ * State Pattern (Behavioral)
+ * Factory Pattern (Creational)
+ */
 public enum SprintStateType implements StateType<SprintState, Sprint> {
     PLANNED(PlannedState::new),
     IN_PROGRESS(InProgressState::new),

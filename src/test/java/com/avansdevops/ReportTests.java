@@ -40,7 +40,8 @@ class ReportTests {
     @ParameterizedTest
     @CsvSource(value = {
             "BURNDOWN, com.avansdevops.sprint.report.types.BurndownReport",
-            "EFFORT_POINTS, com.avansdevops.sprint.report.types.EffortPointsReport"
+            "EFFORT_POINTS, com.avansdevops.sprint.report.types.EffortPointsReport",
+            "TEAM, com.avansdevops.sprint.report.types.TeamReport"
     })
     void reportShouldBeInstanceOfTheRightClass(ReportType type, Class<?> expected) {
         Report report = new ReportBuilder(new Sprint())
@@ -70,7 +71,9 @@ class ReportTests {
             "BURNDOWN, com.avansdevops.sprint.report.export.PdfExportStrategy, 'Exporting PDF:\n\nHeader\n\nBurndown Report\n\nFooter'",
             "BURNDOWN, com.avansdevops.sprint.report.export.PngExportStrategy, 'Exporting PNG:\n\nHeader\n\nBurndown Report\n\nFooter'",
             "EFFORT_POINTS, com.avansdevops.sprint.report.export.PdfExportStrategy, 'Exporting PDF:\n\nHeader\n\nEffort Points Report\n\nFooter'",
-            "EFFORT_POINTS, com.avansdevops.sprint.report.export.PngExportStrategy, 'Exporting PNG:\n\nHeader\n\nEffort Points Report\n\nFooter'"
+            "EFFORT_POINTS, com.avansdevops.sprint.report.export.PngExportStrategy, 'Exporting PNG:\n\nHeader\n\nEffort Points Report\n\nFooter'",
+            "TEAM, com.avansdevops.sprint.report.export.PdfExportStrategy, 'Exporting PDF:\n\nHeader\n\nTeam Report\n\nFooter'",
+            "TEAM, com.avansdevops.sprint.report.export.PngExportStrategy, 'Exporting PNG:\n\nHeader\n\nTeam Report\n\nFooter'"
     })
     void exportShouldLogCorrectOutput(ReportType type, Class<ExportStrategy> strategy, String expected) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Report report = new ReportBuilder(new Sprint())

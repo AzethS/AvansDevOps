@@ -5,7 +5,6 @@ import com.avansdevops.sprint.backlog.BacklogItem;
 
 /**
  * State Pattern (Behavioral)
- * Observer Pattern (Behavioral)
  */
 public class DoingState extends BacklogItemState {
     protected DoingState(BacklogItem context, BacklogItemStateType stateType) {

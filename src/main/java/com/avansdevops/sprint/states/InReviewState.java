@@ -2,6 +2,9 @@ package com.avansdevops.sprint.states;
 
 import com.avansdevops.sprint.Sprint;
 
+/**
+ * State Pattern (Behavioral)
+ */
 public class InReviewState extends SprintState {
     protected InReviewState(Sprint context, SprintStateType stateType) {
         super(context, stateType);

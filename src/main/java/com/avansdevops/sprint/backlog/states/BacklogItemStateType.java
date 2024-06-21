@@ -3,6 +3,9 @@ package com.avansdevops.sprint.backlog.states;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.states.StateType;
 
+/**
+ * Factory Pattern (Creational)
+ */
 public enum BacklogItemStateType implements StateType<BacklogItemState, BacklogItem> {
     TODO(TodoState::new),
     DOING(DoingState::new),

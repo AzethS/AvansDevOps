@@ -3,6 +3,9 @@ package com.avansdevops.sprint.states;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.states.State;
 
+/**
+ * State Pattern (Behavioral)
+ */
 public abstract class SprintState extends State<SprintState, Sprint> {
     protected SprintState(Sprint context, SprintStateType state) {
         super(context, state);

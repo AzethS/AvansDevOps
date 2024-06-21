@@ -4,6 +4,10 @@ import com.avansdevops.notifications.observer.Subscriber;
 import com.avansdevops.notifications.strategy.EmailNotificationStrategy;
 import com.avansdevops.notifications.strategy.NotificationStrategy;
 
+/**
+ * Observer Pattern (Behavioral)
+ * Strategy Pattern (Behavioral)
+ */
 public class User implements Subscriber {
     private final String name;
     private Role role;
