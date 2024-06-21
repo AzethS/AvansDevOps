@@ -13,12 +13,12 @@ public class TestingState extends BacklogItemState {
     }
 
     @Override
-    public void transferToTodo() {
+    public void transferToTodo() { // Complexity 2
         this.setState(BacklogItemStateType.TODO);
 
         this.context.getSprint().notifySubscribers(
                 String.format("Backlog item '%s' has failed the testing phase", this.context.getTitle()),
-                user -> user.getRole() == Role.SCRUM_MASTER
+                user -> user.getRole() == Role.SCRUM_MASTER // +1 (condition in lambda)
         );
     }
 

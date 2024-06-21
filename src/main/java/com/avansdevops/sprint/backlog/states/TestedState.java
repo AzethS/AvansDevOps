@@ -13,11 +13,11 @@ public class TestedState extends BacklogItemState {
     }
 
     @Override
-    public void onStateChanged() {
+    public void onStateChanged() { // Complexity 2
         super.onStateChanged();
         this.context.getSprint().notifySubscribers(
                 String.format("Backlog item '%s' needs to be checked via the definition of done", this.context.getTitle()),
-                user -> user.getRole() == Role.LEAD_DEVELOPER
+                user -> user.getRole() == Role.LEAD_DEVELOPER // +1 (condition in lambda)
         );
     }
 

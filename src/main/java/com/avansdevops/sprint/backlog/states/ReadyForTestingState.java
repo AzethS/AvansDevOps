@@ -13,11 +13,11 @@ public class ReadyForTestingState extends BacklogItemState {
     }
 
     @Override
-    public void onStateChanged() {
+    public void onStateChanged() { // Complexity 2
         super.onStateChanged();
         this.context.getSprint().notifySubscribers(
                 String.format("Backlog item '%s' is ready to be tested", this.context.getTitle()),
-                user -> user.getRole() == Role.TESTER
+                user -> user.getRole() == Role.TESTER // +1 (condition in lambda)
         );
     }
 

@@ -13,11 +13,11 @@ public class FailedState extends SprintState {
     }
 
     @Override
-    public void onStateChanged() {
+    public void onStateChanged() { // Complexity 3
         super.onStateChanged();
         this.context.notifySubscribers(
                 "Sprint has failed",
-                user -> user.getRole() == Role.PRODUCT_OWNER || user.getRole() == Role.SCRUM_MASTER
+                user -> user.getRole() == Role.PRODUCT_OWNER || user.getRole() == Role.SCRUM_MASTER // +2 (2 conditions in lambda)
         );
     }
 }
