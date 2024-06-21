@@ -49,6 +49,6 @@ public class ReportBuilder {
             throw new IllegalStateException("Export strategy is required");
         }
 
-        return this.reportType.factory().create(this.sprint, this.header, this.footer, this.exportStrategy);
+        return this.reportType.create(this.sprint, this.header, this.footer, this.exportStrategy);
     }
 }

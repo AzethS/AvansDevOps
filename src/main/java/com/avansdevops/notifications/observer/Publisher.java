@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 /**
  * Observer pattern (Behavioral)
  */
-public abstract class Publisher<T extends Subscriber> {
+public class Publisher<T extends Subscriber> {
     protected final List<T> subscribers = new ArrayList<>();
 
     public void subscribe(T subscriber) {
