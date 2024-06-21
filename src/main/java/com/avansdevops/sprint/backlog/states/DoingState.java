@@ -17,17 +17,17 @@ public class DoingState extends BacklogItemState {
     }
 
     @Override
-    public void transferToReadyForTesting() {
-        if (this.isFinished()) {
+    public void transferToReadyForTesting() { // Complexity 2
+        if (this.isFinished()) { // +1 (if statement)
             this.setState(BacklogItemStateType.READY_FOR_TESTING);
         } else {
             throw new IllegalStateException("Not all activities have been finished!");
         }
     }
 
-    private boolean isFinished() {
-        for (Activity activity : this.context.getActivities()) {
-            if (!activity.isFinished()) {
+    private boolean isFinished() { // Complexity 3
+        for (Activity activity : this.context.getActivities()) { // +1 (loop)
+            if (!activity.isFinished()) { // +1 (if statement)
                 return false;
             }
         }

@@ -17,16 +17,16 @@ public abstract class Report {
 
     public abstract String generate(Sprint sprint);
 
-    private String generateReport(String header, String footer, Sprint sprint) {
+    private String generateReport(String header, String footer, Sprint sprint) { // Complexity 3
         StringBuilder builder = new StringBuilder();
-        if (!header.isEmpty()) {
+        if (!header.isEmpty()) { // +1 (if statement)
             builder.append(header);
             builder.append("\n\n");
         }
 
         builder.append(this.generate(sprint));
 
-        if (!footer.isEmpty()) {
+        if (!footer.isEmpty()) { // +1 (if statement)
             builder.append("\n\n");
             builder.append(footer);
         }

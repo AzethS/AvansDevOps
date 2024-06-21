@@ -12,9 +12,9 @@ public class Pipeline {
         this.actions.add(action);
     }
 
-    public boolean run() {
-        for (Action action : this.actions) {
-            if (!action.execute()) {
+    public boolean run() { // Complexity 3
+        for (Action action : this.actions) { // +1 (loop)
+            if (!action.execute()) { // +1 (if statement)
                 return false;
             }
         }

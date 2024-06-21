@@ -24,8 +24,8 @@ public class State<S extends State<S, C>, C extends StateContext<S>> {
         AvansDevOps.LOGGER.info("State changed to {}", this.stateType);
     }
 
-    protected void throwCannotTransfer(StateType<S, C> newState) {
-        if (this.stateType == newState) {
+    protected void throwCannotTransfer(StateType<S, C> newState) { // Complexity 2
+        if (this.stateType == newState) { // +1 (if statement)
             throw new IllegalStateException("Already in %s state".formatted(newState));
         } else {
             throw new IllegalStateException("Cannot transfer from %s to %s".formatted(this.stateType, newState));

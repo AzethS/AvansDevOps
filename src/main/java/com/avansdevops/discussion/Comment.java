@@ -30,15 +30,15 @@ public class Comment implements DiscussionVisitable {
     }
 
     @Override
-    public void accept(DiscussionVisitor visitor) {
+    public void accept(DiscussionVisitor visitor) { // Complexity 2
         visitor.visit(this);
-        for (Comment reply : this.replies) {
+        for (Comment reply : this.replies) { // +1 (loop)
             reply.accept(visitor);
         }
     }
 
-    public Comment addReply(User author, String content) {
-        if (!this.discussion.isEditable()) {
+    public Comment addReply(User author, String content) { // Complexity 2
+        if (!this.discussion.isEditable()) { // +1 (if statement)
             throw new IllegalStateException("Discussion is not editable");
         }
 

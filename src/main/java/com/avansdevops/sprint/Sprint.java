@@ -48,18 +48,18 @@ public class Sprint extends Publisher<User> implements StateContext<SprintState>
         return this.backlog;
     }
 
-    public void addParticipant(User user) {
-        if (this.participants.contains(user)) {
+    public void addParticipant(User user) { // Complexity 5
+        if (this.participants.contains(user)) { // +1 (if statement)
             throw new IllegalArgumentException("User is already a participant of this sprint");
         }
 
         Role role = user.getRole();
         boolean canAdd = switch (role) {
-            case PRODUCT_OWNER, SCRUM_MASTER -> !this.hasRole(role);
-            default -> true;
+            case PRODUCT_OWNER, SCRUM_MASTER -> !this.hasRole(role); // +1 (switch statement)
+            default -> true; // +1 (switch statement)
         };
 
-        if (canAdd) {
+        if (canAdd) { // +1 (if statement)
             this.participants.add(user);
             this.subscribe(user);
         } else {
@@ -67,15 +67,15 @@ public class Sprint extends Publisher<User> implements StateContext<SprintState>
         }
     }
 
-    public void removeParticipant(User user) {
-        if (this.participants.remove(user)) {
+    public void removeParticipant(User user) { // Complexity 2
+        if (this.participants.remove(user)) { // +1 (if statement)
             this.unsubscribe(user);
         }
     }
 
-    private boolean hasRole(Role role) {
-        for (User user : this.participants) {
-            if (user.getRole() == role) {
+    private boolean hasRole(Role role) { // Complexity 3
+        for (User user : this.participants) { // +1 (loop)
+            if (user.getRole() == role) { // +1 (if statement)
                 return true;
             }
         }

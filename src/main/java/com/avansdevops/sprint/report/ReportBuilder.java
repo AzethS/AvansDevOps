@@ -40,12 +40,12 @@ public class ReportBuilder {
         return this;
     }
 
-    public Report build() {
-        if (this.reportType == null) {
+    public Report build() { // Complexity 3
+        if (this.reportType == null) { // +1 (if statement)
             throw new IllegalStateException("Report type is required");
         }
 
-        if (this.exportStrategy == null) {
+        if (this.exportStrategy == null) { // +1 (if statement)
             throw new IllegalStateException("Export strategy is required");
         }
 

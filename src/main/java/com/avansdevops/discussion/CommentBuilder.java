@@ -33,12 +33,12 @@ public class CommentBuilder {
         return this;
     }
 
-    public Comment build() {
-        if (this.author == null) {
+    public Comment build() { // Complexity 3
+        if (this.author == null) { // +1 (if statement)
             throw new IllegalStateException("Author is required");
         }
 
-        if (this.content == null) {
+        if (this.content == null) { // +1 (if statement)
             throw new IllegalStateException("Content is required");
         }
 
@@ -47,8 +47,8 @@ public class CommentBuilder {
         return comment;
     }
 
-    private void recursiveAddReplies(Comment comment, List<CommentBuilder> replies) {
-        for (CommentBuilder reply : replies) {
+    private void recursiveAddReplies(Comment comment, List<CommentBuilder> replies) { // Complexity 2
+        for (CommentBuilder reply : replies) { // +1 (loop)
             this.recursiveAddReplies(
                     comment.addReply(reply.author, reply.content),
                     reply.replies

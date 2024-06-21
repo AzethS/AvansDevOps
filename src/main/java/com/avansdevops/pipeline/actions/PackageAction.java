@@ -12,9 +12,9 @@ public class PackageAction implements Action {
     }
 
     @Override
-    public boolean execute() {
-        for (String packageId : this.packages) {
-            if (!this.installPackage(packageId)) {
+    public boolean execute() { // Complexity 3
+        for (String packageId : this.packages) { // +1 (loop)
+            if (!this.installPackage(packageId)) { // +1 (if statement)
                 return false;
             }
         }

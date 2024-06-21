@@ -10,7 +10,8 @@ public class TestAction implements Action {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute() { // Complexity 3
+        // +2 (2 conditions)
         return this.runTests() && this.publishTestResults();
     }
 

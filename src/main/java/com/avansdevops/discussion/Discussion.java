@@ -32,8 +32,8 @@ public class Discussion implements DiscussionVisitable {
         return new CommentBuilder(this);
     }
 
-    public void addComment(Comment comment) {
-        if (!this.isEditable()) {
+    public void addComment(Comment comment) { // Complexity 2
+        if (!this.isEditable()) { // +1 (if statement)
             throw new IllegalStateException("Discussion is not editable");
         }
         this.comments.add(comment);
@@ -44,9 +44,9 @@ public class Discussion implements DiscussionVisitable {
     }
 
     @Override
-    public void accept(DiscussionVisitor visitor) {
+    public void accept(DiscussionVisitor visitor) { // Complexity 2
         visitor.visit(this);
-        for (Comment comment : this.comments) {
+        for (Comment comment : this.comments) { // +1 (loop)
             comment.accept(visitor);
         }
     }

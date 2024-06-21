@@ -8,7 +8,8 @@ public enum Role {
     TESTER,
     UNKNOWN;
 
-    public boolean isDeveloper() {
+    public boolean isDeveloper() { // Complexity 3
+        // +2 (2 conditions)
         return this == DEVELOPER || this == LEAD_DEVELOPER;
     }
 }

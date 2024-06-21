@@ -38,8 +38,8 @@ public class BacklogItem implements StateContext<BacklogItemState> {
         this.sprint = sprint;
     }
 
-    public void setAssignedUser(User user) {
-        if (!user.getRole().isDeveloper()) {
+    public void setAssignedUser(User user) { // Complexity 2
+        if (!user.getRole().isDeveloper()) { // +1 (if statement)
             throw new IllegalArgumentException("User is not a developer!");
         }
 
@@ -50,8 +50,8 @@ public class BacklogItem implements StateContext<BacklogItemState> {
         return this.state instanceof DoneState;
     }
 
-    public Sprint getSprint() {
-        if (this.sprint == null) {
+    public Sprint getSprint() { // Complexity 2
+        if (this.sprint == null) { // +1 (if statement)
             throw new IllegalStateException("Sprint is not set for this backlog item!");
         }
         return this.sprint;

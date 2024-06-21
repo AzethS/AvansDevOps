@@ -17,13 +17,13 @@ public class Repository {
         this.commits.put(hash, commit);
     }
 
-    public void push(String hash) {
+    public void push(String hash) { // Complexity 3
         Commit commit = this.commits.get(hash);
-        if (commit == null) {
+        if (commit == null) { // +1 (if statement)
             throw new IllegalStateException("No changes to push!");
         }
 
-        if (commit.isOnRemote()) {
+        if (commit.isOnRemote()) { // +1 (if statement)
             throw new IllegalStateException("Commit is already on the remote repository!");
         }
 

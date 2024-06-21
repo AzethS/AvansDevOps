@@ -11,8 +11,8 @@ public class Activity {
         this.title = title;
     }
 
-    public void setAssignedUser(User user) {
-        if (!user.getRole().isDeveloper()) {
+    public void setAssignedUser(User user) { // Complexity 2
+        if (!user.getRole().isDeveloper()) { // +1 (if statement)
             throw new IllegalArgumentException("User is not a developer!");
         }
 
