@@ -8,6 +8,7 @@ import com.avansdevops.discussion.visitor.DiscussionVisitor;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.backlog.states.BacklogItemStateType;
+import com.avansdevops.sprint.states.SprintStateType;
 import com.avansdevops.user.User;
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.*;
@@ -38,7 +39,9 @@ class DiscussionTests {
         User user = new User("John");
 
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Finished Backlog Item");
+        BacklogItem item = new BacklogItem("Finished Backlog Item");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item.setState(BacklogItemStateType.DONE.create(item));
 
         Discussion discussion = new Discussion(item);
@@ -56,7 +59,9 @@ class DiscussionTests {
         User user2 = new User("Jane");
 
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Finished Backlog Item");
+        BacklogItem item = new BacklogItem("Finished Backlog Item");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item.setState(BacklogItemStateType.DONE.create(item));
 
         Discussion discussion = new Discussion(item);
@@ -134,7 +139,8 @@ class DiscussionTests {
         User user3 = new User("Jack");
 
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Todo Backlog Item");
+        BacklogItem item = new BacklogItem("Todo Backlog Item");
+        sprint.addBacklogItem(item);
         Discussion discussion = new Discussion(item);
 
         discussion.addComment(discussion.comment()

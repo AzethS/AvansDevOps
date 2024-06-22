@@ -22,7 +22,8 @@ class SprintTests {
     @Test
     void addBacklogItemShouldSucceed() {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item");
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
 
         Assertions.assertTrue(sprint.getBacklog().contains(item));
     }
@@ -30,12 +31,32 @@ class SprintTests {
     @Test
     void removeBacklogItemShouldSucceed() {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item");
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
 
         Assertions.assertTrue(sprint.getBacklog().contains(item));
 
         sprint.removeBacklogItem(item);
         Assertions.assertFalse(sprint.getBacklog().contains(item));
+    }
+
+    @Test
+    void addBacklogItemOnInProgressSprintShouldFail() {
+        Sprint sprint = new Sprint();
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
+        BacklogItem item = new BacklogItem("Test Item");
+
+        Assertions.assertThrows(IllegalStateException.class, () -> sprint.addBacklogItem(item));
+    }
+
+    @Test
+    void removeBacklogItemOnInProgressSprintShouldFail() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
+
+        Assertions.assertThrows(IllegalStateException.class, () -> sprint.removeBacklogItem(item));
     }
 
     @Test

@@ -7,6 +7,7 @@ import com.avansdevops.project.Repository;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.backlog.states.BacklogItemStateType;
+import com.avansdevops.sprint.states.SprintStateType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +47,8 @@ class ProjectTests {
         BacklogItem item3 = new BacklogItem("Item 3");
         BacklogItem item4 = new BacklogItem("Item 4");
 
-        item1.setSprint(sprint);
+        sprint.addBacklogItem(item1);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item1.setState(BacklogItemStateType.DONE.create(item1));
 
         project.addBacklogItem(item3);
@@ -72,7 +74,8 @@ class ProjectTests {
         Discussion discussion3 = new Discussion(item3);
         Discussion discussion4 = new Discussion(item4);
 
-        item1.setSprint(sprint);
+        sprint.addBacklogItem(item1);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item1.setState(BacklogItemStateType.DONE.create(item1));
 
         project.addDiscussion(discussion3);

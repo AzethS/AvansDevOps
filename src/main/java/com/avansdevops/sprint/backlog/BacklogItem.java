@@ -3,7 +3,7 @@ package com.avansdevops.sprint.backlog;
 import com.avansdevops.sprint.Sprint;
 import com.avansdevops.sprint.backlog.states.BacklogItemState;
 import com.avansdevops.sprint.backlog.states.BacklogItemStateType;
-import com.avansdevops.sprint.backlog.states.DoneState;
+import com.avansdevops.sprint.states.SprintStateType;
 import com.avansdevops.states.StateContext;
 import com.avansdevops.user.User;
 
@@ -26,6 +26,7 @@ public class BacklogItem implements StateContext<BacklogItemState> {
 
     @Override
     public void setState(BacklogItemState state) {
+        this.ensureSprintInState(SprintStateType.IN_PROGRESS);
         this.state = state;
     }
 
@@ -47,13 +48,11 @@ public class BacklogItem implements StateContext<BacklogItemState> {
     }
 
     public boolean isDone() {
-        return this.state instanceof DoneState;
+        return this.state.getType() == BacklogItemStateType.DONE;
     }
 
-    public Sprint getSprint() { // Complexity 2
-        if (this.sprint == null) { // +1 (if statement)
-            throw new IllegalStateException("Sprint is not set for this backlog item!");
-        }
+    public Sprint getSprint() {
+        this.ensureHasSprint();
         return this.sprint;
     }
 
@@ -70,10 +69,23 @@ public class BacklogItem implements StateContext<BacklogItemState> {
     }
 
     public void addActivity(Activity activity) {
+        this.ensureSprintInState(SprintStateType.PLANNED);
         this.activities.add(activity);
     }
 
     public void removeActivity(Activity activity) {
+        this.ensureSprintInState(SprintStateType.PLANNED);
         this.activities.remove(activity);
+    }
+
+    private void ensureSprintInState(SprintStateType type) {
+        this.ensureHasSprint();
+        this.sprint.validateState(type);
+    }
+
+    private void ensureHasSprint() { // Complexity 2
+        if (this.sprint == null) { // +1 (if statement)
+            throw new IllegalStateException("Sprint is not set for this backlog item!");
+        }
     }
 }

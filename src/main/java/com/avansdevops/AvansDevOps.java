@@ -64,7 +64,8 @@ public class AvansDevOps {
         User user3 = new User("Jack");
 
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Exporting Strategy");
+        BacklogItem item = new BacklogItem("Exporting Strategy");
+        sprint.addBacklogItem(item);
         Discussion discussion = new Discussion(item);
 
         discussion.addComment(discussion.comment()
@@ -93,7 +94,8 @@ public class AvansDevOps {
     private static void testBacklogStates() {
         Sprint sprint = createSprintWithPipeline();
 
-        BacklogItem item = sprint.addBacklogItem("State Patterns");
+        BacklogItem item = new BacklogItem("State Patterns");
+        sprint.addBacklogItem(item);
 
         LOGGER.info("# Fail during testing phase (by tester)");
         item.getState().transferToDoing();

@@ -33,15 +33,16 @@ public class Sprint extends Publisher<User> implements StateContext<SprintState>
         this.state = state;
     }
 
-    public BacklogItem addBacklogItem(String title) {
-        BacklogItem item = new BacklogItem(title);
-        item.setSprint(this);
+    public void addBacklogItem(BacklogItem item) {
+        this.validateState(SprintStateType.PLANNED);
         this.backlog.add(item);
-        return item;
+        item.setSprint(this);
     }
 
     public void removeBacklogItem(BacklogItem item) {
+        this.validateState(SprintStateType.PLANNED);
         this.backlog.remove(item);
+        item.setSprint(null);
     }
 
     public List<BacklogItem> getBacklog() {
@@ -84,5 +85,11 @@ public class Sprint extends Publisher<User> implements StateContext<SprintState>
 
     public void onFinished() {
         // NO-OP
+    }
+
+    public void validateState(SprintStateType type) { // Complexity 2
+        if (this.state.getType() != type) { // +1 (if statement)
+            throw new IllegalStateException("Sprint is not in the %s phase!".formatted(type));
+        }
     }
 }

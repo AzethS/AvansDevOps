@@ -6,6 +6,7 @@ import com.avansdevops.sprint.backlog.Activity;
 import com.avansdevops.sprint.backlog.BacklogItem;
 import com.avansdevops.sprint.backlog.states.BacklogItemState;
 import com.avansdevops.sprint.backlog.states.BacklogItemStateType;
+import com.avansdevops.sprint.states.SprintStateType;
 import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,9 @@ class BacklogItemTests {
     @Test
     void backlogItemWithDoneStateShouldBeDone() {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item | Done");
+        BacklogItem item = new BacklogItem("Test Item | Done");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item.setState(BacklogItemStateType.DONE.create(item));
 
         Assertions.assertTrue(item.isDone());
@@ -65,9 +68,75 @@ class BacklogItemTests {
     }
 
     @Test
+    void backlogItemNotAssignedToSprintShouldFailToModifyState() {
+        BacklogItem item = new BacklogItem("Test Item");
+        BacklogItemState state = item.getState();
+
+        Assertions.assertThrows(IllegalStateException.class, state::transferToDoing);
+    }
+
+    @Test
+    void backlogItemAssignedToPlannedSprintShouldFailToModifyState() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
+        BacklogItemState state = item.getState();
+
+        Assertions.assertThrows(IllegalStateException.class, state::transferToDoing);
+    }
+
+    @Test
+    void backlogItemNotAssignedToSprintShouldFailToAddActivity() {
+        BacklogItem item = new BacklogItem("Test Item");
+
+        Activity activity = new Activity("Activity");
+        Assertions.assertThrows(IllegalStateException.class, () -> item.addActivity(activity));
+    }
+
+    @Test
+    void backlogItemAssignedToInProgressSprintShouldFailToAddActivity() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
+
+        Activity activity = new Activity("Activity");
+        Assertions.assertThrows(IllegalStateException.class, () -> item.addActivity(activity));
+    }
+
+    @Test
+    void backlogItemNotAssignedToSprintShouldFailToRemoveActivity() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
+
+        Activity activity = new Activity("Activity");
+        item.addActivity(activity);
+
+        sprint.removeBacklogItem(item);
+
+        Assertions.assertThrows(IllegalStateException.class, () -> item.removeActivity(activity));
+    }
+
+    @Test
+    void backlogItemAssignedToInProgressSprintShouldFailToRemoveActivity() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
+
+        Activity activity = new Activity("Activity");
+        item.addActivity(activity);
+
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
+
+        Assertions.assertThrows(IllegalStateException.class, () -> item.removeActivity(activity));
+    }
+
+    @Test
     void backlogItemAssignNonDeveloperUserShouldFail() {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item");
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
 
         User user = new User("Tester", Role.TESTER);
         Assertions.assertThrows(IllegalArgumentException.class, () -> item.setAssignedUser(user));
@@ -84,14 +153,17 @@ class BacklogItemTests {
     @Test
     void transferringFromDoingToReadyForTestingShouldFailIfActivitiesNotFinished() {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item");
-        item.setState(BacklogItemStateType.DOING.create(item));
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
 
         Activity unfinishedActivity = new Activity("Unfinished Activity");
         Activity finishedActivity = new Activity("Finished Activity");
 
         item.addActivity(finishedActivity);
         item.addActivity(unfinishedActivity);
+
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
+        item.setState(BacklogItemStateType.DOING.create(item));
 
         finishedActivity.finish();
 
@@ -102,14 +174,17 @@ class BacklogItemTests {
     @Test
     void transferringFromDoingToReadyForTestingShouldSucceedIfActivitiesHaveFinished() {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item");
-        item.setState(BacklogItemStateType.DOING.create(item));
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
 
         Activity finishedActivity = new Activity("Finished Activity");
         Activity finishedActivity2 = new Activity("Finished Activity 2");
 
         item.addActivity(finishedActivity);
         item.addActivity(finishedActivity2);
+
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
+        item.setState(BacklogItemStateType.DOING.create(item));
 
         finishedActivity.finish();
         finishedActivity2.finish();
@@ -128,7 +203,9 @@ class BacklogItemTests {
     })
     void transferringFromTodoToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item | Todo");
+        BacklogItem item = new BacklogItem("Test Item | Todo");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
 
         assertThrows(item.getState(), methodName, shouldThrow);
     }
@@ -144,7 +221,9 @@ class BacklogItemTests {
     })
     void transferringFromDoingToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item | Doing");
+        BacklogItem item = new BacklogItem("Test Item | Doing");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item.setState(BacklogItemStateType.DOING.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -161,7 +240,9 @@ class BacklogItemTests {
     })
     void transferringFromReadyForTestingToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item | ReadyForTesting");
+        BacklogItem item = new BacklogItem("Test Item | ReadyForTesting");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item.setState(BacklogItemStateType.READY_FOR_TESTING.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -178,7 +259,9 @@ class BacklogItemTests {
     })
     void transferringFromTestingToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item | Testing");
+        BacklogItem item = new BacklogItem("Test Item | Testing");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item.setState(BacklogItemStateType.TESTING.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -195,7 +278,9 @@ class BacklogItemTests {
     })
     void transferringFromTestedToInvalidStateShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item | Tested");
+        BacklogItem item = new BacklogItem("Test Item | Tested");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item.setState(BacklogItemStateType.TESTED.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -212,7 +297,9 @@ class BacklogItemTests {
     })
     void transferringFromDoneShouldFail(String methodName, boolean shouldThrow) throws NoSuchMethodException {
         Sprint sprint = new Sprint();
-        BacklogItem item = sprint.addBacklogItem("Test Item | Done");
+        BacklogItem item = new BacklogItem("Test Item | Done");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item.setState(BacklogItemStateType.DONE.create(item));
 
         assertThrows(item.getState(), methodName, shouldThrow);
@@ -243,7 +330,9 @@ class BacklogItemTests {
         sprint.addParticipant(scrumMaster);
         sprint.addParticipant(tester);
 
-        BacklogItem item = sprint.addBacklogItem("Backlog Item");
+        BacklogItem item = new BacklogItem("Backlog Item");
+        sprint.addBacklogItem(item);
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
         item.setState(stateType.create(item));
         return new MockedBacklogItem(item, leadDeveloperStrategy, scrumMasterStrategy, testerStrategy);
     }
