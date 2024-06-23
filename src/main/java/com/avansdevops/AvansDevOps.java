@@ -15,6 +15,7 @@ import com.avansdevops.sprint.report.ReportBuilder;
 import com.avansdevops.sprint.report.export.PdfExportStrategy;
 import com.avansdevops.sprint.report.export.PngExportStrategy;
 import com.avansdevops.sprint.report.types.ReportType;
+import com.avansdevops.sprint.states.SprintStateType;
 import com.avansdevops.user.Role;
 import com.avansdevops.user.User;
 import org.apache.logging.log4j.LogManager;
@@ -96,6 +97,8 @@ public class AvansDevOps {
 
         BacklogItem item = new BacklogItem("State Patterns");
         sprint.addBacklogItem(item);
+        
+        sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
 
         LOGGER.info("# Fail during testing phase (by tester)");
         item.getState().transferToDoing();
