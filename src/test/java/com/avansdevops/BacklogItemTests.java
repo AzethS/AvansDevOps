@@ -119,6 +119,18 @@ class BacklogItemTests {
     }
 
     @Test
+    void backlogItemAssignedToPlannedSprintShouldSucceedToRemoveActivity() {
+        Sprint sprint = new Sprint();
+        BacklogItem item = new BacklogItem("Test Item");
+        sprint.addBacklogItem(item);
+
+        Activity activity = new Activity("Activity");
+        item.addActivity(activity);
+
+        Assertions.assertDoesNotThrow(() -> item.removeActivity(activity));
+    }
+
+    @Test
     void backlogItemAssignedToInProgressSprintShouldFailToRemoveActivity() {
         Sprint sprint = new Sprint();
         BacklogItem item = new BacklogItem("Test Item");

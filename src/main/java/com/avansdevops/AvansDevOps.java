@@ -97,7 +97,7 @@ public class AvansDevOps {
 
         BacklogItem item = new BacklogItem("State Patterns");
         sprint.addBacklogItem(item);
-        
+
         sprint.setState(SprintStateType.IN_PROGRESS.create(sprint));
 
         LOGGER.info("# Fail during testing phase (by tester)");
